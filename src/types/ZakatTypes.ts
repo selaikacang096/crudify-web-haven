@@ -33,3 +33,15 @@ export interface TableColumn {
   label: string;
   render?: (value: any, record: ZakatRecord) => React.ReactNode;
 }
+
+export interface DailyReportItem {
+  label: string;
+  count: number;
+  color: string;
+}
+
+export interface DailyReportData {
+  date: string;
+  totalRecords: number;
+  items: DailyReportItem[];
+}
