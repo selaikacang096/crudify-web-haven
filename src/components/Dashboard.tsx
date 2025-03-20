@@ -122,52 +122,108 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       "#EAB308", // yellow
       "#10B981", // emerald
       "#0EA5E9", // sky
-      "#6366F1"  // indigo
+      "#6366F1",  // indigo
+      "#3B82F6", // blue
+      "#14B8A6"  // teal
     ];
 
-    // Count different types of contributions
-    const zakatFitrahBerasCount = todayRecords.filter(record => record.zakatFitrah.berasKg > 0).length;
-    const zakatFitrahUangCount = todayRecords.filter(record => record.zakatFitrah.uang > 0).length;
-    const zakatMaalCount = todayRecords.filter(record => record.zakatMaal > 0).length;
-    const infaqBerasCount = todayRecords.filter(record => record.infaq.beras > 0).length;
-    const infaqUangCount = todayRecords.filter(record => record.infaq.uang > 0).length;
-    const fidyahBerasCount = todayRecords.filter(record => record.fidyah.beras > 0).length;
-    const fidyahUangCount = todayRecords.filter(record => record.fidyah.uang > 0).length;
+    // Calculate sums for each category
+    const zakatFitrahJiwaBeras = todayRecords.reduce((sum, record) => sum + record.zakatFitrah.jiwaBeras, 0);
+    const zakatFitrahBerasKg = todayRecords.reduce((sum, record) => sum + record.zakatFitrah.berasKg, 0);
+    const zakatFitrahJiwaUang = todayRecords.reduce((sum, record) => sum + record.zakatFitrah.jiwaUang, 0);
+    const zakatFitrahUang = todayRecords.reduce((sum, record) => sum + record.zakatFitrah.uang, 0);
+    const zakatMaal = todayRecords.reduce((sum, record) => sum + record.zakatMaal, 0);
+    const infaqBeras = todayRecords.reduce((sum, record) => sum + record.infaq.beras, 0);
+    const infaqUang = todayRecords.reduce((sum, record) => sum + record.infaq.uang, 0);
+    const fidyahBeras = todayRecords.reduce((sum, record) => sum + record.fidyah.beras, 0);
+    const fidyahUang = todayRecords.reduce((sum, record) => sum + record.fidyah.uang, 0);
     
     const items: DailyReportItem[] = [
-      { label: "Zakat Fitrah (Beras)", count: zakatFitrahBerasCount, color: colors[0] },
-      { label: "Zakat Fitrah (Uang)", count: zakatFitrahUangCount, color: colors[1] },
-      { label: "Zakat Maal", count: zakatMaalCount, color: colors[2] },
-      { label: "Infaq (Beras)", count: infaqBerasCount, color: colors[3] },
-      { label: "Infaq (Uang)", count: infaqUangCount, color: colors[4] },
-      { label: "Fidyah (Beras)", count: fidyahBerasCount, color: colors[5] },
-      { label: "Fidyah (Uang)", count: fidyahUangCount, color: colors[6] }
-    ].filter(item => item.count > 0); // Filter out items with zero count
+      { label: "Zakat Fitrah (Jiwa Beras)", value: zakatFitrahJiwaBeras, color: colors[0], unit: "jiwa" },
+      { label: "Zakat Fitrah (Beras)", value: zakatFitrahBerasKg, color: colors[1], unit: "kg" },
+      { label: "Zakat Fitrah (Jiwa Uang)", value: zakatFitrahJiwaUang, color: colors[2], unit: "jiwa" },
+      { label: "Zakat Fitrah (Uang)", value: zakatFitrahUang, color: colors[3], unit: "Rp" },
+      { label: "Zakat Maal", value: zakatMaal, color: colors[4], unit: "Rp" },
+      { label: "Infaq (Beras)", value: infaqBeras, color: colors[5], unit: "kg" },
+      { label: "Infaq (Uang)", value: infaqUang, color: colors[6], unit: "Rp" },
+      { label: "Fidyah (Beras)", value: fidyahBeras, color: colors[7], unit: "kg" },
+      { label: "Fidyah (Uang)", value: fidyahUang, color: colors[8], unit: "Rp" }
+    ].filter(item => item.value > 0); // Filter out items with zero value
     
     return {
       date: today,
       totalRecords: todayRecords.length,
-      items: items.length ? items : [{ label: "No records today", count: 0, color: "#999" }]
+      items: items.length ? items : [{ label: "No records today", value: 0, color: "#999" }]
     };
   }, [data]);
 
   // Convert dailyReportData to table format
   const dailyReportTableData: DailyReportTableRow[] = useMemo(() => {
-    const totalCount = dailyReportData.items.reduce((sum, item) => sum + item.count, 0);
+    // Separate items by type for percentage calculation
+    const berasItems = dailyReportData.items.filter(item => item.unit === "kg");
+    const uangItems = dailyReportData.items.filter(item => item.unit === "Rp");
+    const jiwaItems = dailyReportData.items.filter(item => item.unit === "jiwa");
     
-    return dailyReportData.items.map((item, index) => ({
-      id: index + 1,
-      category: item.label,
-      count: item.count,
-      percentage: totalCount > 0 ? (item.count / totalCount) * 100 : 0
-    }));
+    const totalBeras = berasItems.reduce((sum, item) => sum + item.value, 0);
+    const totalUang = uangItems.reduce((sum, item) => sum + item.value, 0);
+    const totalJiwa = jiwaItems.reduce((sum, item) => sum + item.value, 0);
+    
+    return dailyReportData.items.map((item, index) => {
+      let percentage = 0;
+      
+      if (item.unit === "kg" && totalBeras > 0) {
+        percentage = (item.value / totalBeras) * 100;
+      } else if (item.unit === "Rp" && totalUang > 0) {
+        percentage = (item.value / totalUang) * 100;
+      } else if (item.unit === "jiwa" && totalJiwa > 0) {
+        percentage = (item.value / totalJiwa) * 100;
+      }
+      
+      return {
+        id: index + 1,
+        category: item.label,
+        value: item.value,
+        unit: item.unit,
+        percentage: percentage
+      };
+    });
   }, [dailyReportData]);
 
-  // Convert dailyReportData to chart format
-  const dailyReportChartData = dailyReportData.items.map(item => ({
-    name: item.label,
-    value: item.count
-  }));
+  // Format value based on unit
+  const formatValue = (value: number, unit?: string) => {
+    if (unit === "Rp") {
+      return formatCurrency(value);
+    } else if (unit === "kg" || unit === "jiwa") {
+      return `${value} ${unit}`;
+    }
+    return value;
+  };
+
+  // Convert dailyReportData to chart format for pie chart
+  const dailyReportChartData = useMemo(() => {
+    // Separate items by type
+    const berasItems = dailyReportData.items.filter(item => item.unit === "kg");
+    const uangItems = dailyReportData.items.filter(item => item.unit === "Rp");
+    const jiwaItems = dailyReportData.items.filter(item => item.unit === "jiwa");
+    
+    // Return based on which has the most items
+    if (uangItems.length >= berasItems.length && uangItems.length >= jiwaItems.length) {
+      return uangItems.map(item => ({
+        name: item.label,
+        value: item.value
+      }));
+    } else if (berasItems.length >= uangItems.length && berasItems.length >= jiwaItems.length) {
+      return berasItems.map(item => ({
+        name: item.label,
+        value: item.value
+      }));
+    } else {
+      return jiwaItems.map(item => ({
+        name: item.label,
+        value: item.value
+      }));
+    }
+  }, [dailyReportData]);
 
   // Function to export daily report to Excel
   const exportToExcel = () => {
@@ -176,16 +232,42 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       let csvContent = "data:text/csv;charset=utf-8,";
       
       // Add headers
-      csvContent += "No,Category,Count,Percentage (%)\n";
+      csvContent += "No,Category,Value,Percentage (%)\n";
       
-      // Add data rows
-      dailyReportTableData.forEach(row => {
-        csvContent += `${row.id},${row.category},${row.count},${row.percentage.toFixed(2)}\n`;
-      });
+      // Group items by unit
+      const berasItems = dailyReportTableData.filter(row => dailyReportData.items[row.id - 1].unit === "kg");
+      const uangItems = dailyReportTableData.filter(row => dailyReportData.items[row.id - 1].unit === "Rp");
+      const jiwaItems = dailyReportTableData.filter(row => dailyReportData.items[row.id - 1].unit === "jiwa");
       
-      // Add total row
-      const totalCount = dailyReportTableData.reduce((sum, row) => sum + row.count, 0);
-      csvContent += `${dailyReportTableData.length + 1},Total,${totalCount},100\n`;
+      // Add Jiwa section if available
+      if (jiwaItems.length > 0) {
+        csvContent += "JIWA SECTION\n";
+        jiwaItems.forEach(row => {
+          csvContent += `${row.id},${row.category},${row.value} jiwa,${row.percentage.toFixed(2)}\n`;
+        });
+        const totalJiwa = jiwaItems.reduce((sum, row) => sum + row.value, 0);
+        csvContent += `TOTAL JIWA,${totalJiwa} jiwa,100\n\n`;
+      }
+      
+      // Add Beras section if available
+      if (berasItems.length > 0) {
+        csvContent += "BERAS SECTION\n";
+        berasItems.forEach(row => {
+          csvContent += `${row.id},${row.category},${row.value} kg,${row.percentage.toFixed(2)}\n`;
+        });
+        const totalBeras = berasItems.reduce((sum, row) => sum + row.value, 0);
+        csvContent += `TOTAL BERAS,${totalBeras} kg,100\n\n`;
+      }
+      
+      // Add Uang section if available
+      if (uangItems.length > 0) {
+        csvContent += "UANG SECTION\n";
+        uangItems.forEach(row => {
+          csvContent += `${row.id},${row.category},${formatCurrency(row.value)},${row.percentage.toFixed(2)}\n`;
+        });
+        const totalUang = uangItems.reduce((sum, row) => sum + row.value, 0);
+        csvContent += `TOTAL UANG,${formatCurrency(totalUang)},100\n`;
+      }
       
       // Create a download link and trigger download
       const encodedUri = encodeURI(csvContent);
@@ -257,7 +339,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
                     <TableRow>
                       <TableHead className="w-12">No</TableHead>
                       <TableHead>Category</TableHead>
-                      <TableHead className="text-right">Count</TableHead>
+                      <TableHead className="text-right">Value</TableHead>
                       <TableHead className="text-right">Percentage</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -270,29 +352,116 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
                       </TableRow>
                     ) : (
                       <>
-                        {dailyReportTableData.map((row) => (
-                          <TableRow key={row.id}>
-                            <TableCell>{row.id}</TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-2">
-                                <div 
-                                  className="w-3 h-3 rounded-full" 
-                                  style={{ backgroundColor: dailyReportData.items[row.id - 1]?.color || "#999" }}
-                                />
-                                <span>{row.category}</span>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">{row.count}</TableCell>
-                            <TableCell className="text-right">{row.percentage.toFixed(2)}%</TableCell>
-                          </TableRow>
-                        ))}
-                        <TableRow className="font-medium bg-muted/50">
-                          <TableCell colSpan={2}>Total</TableCell>
-                          <TableCell className="text-right">
-                            {dailyReportTableData.reduce((sum, row) => sum + row.count, 0)}
-                          </TableCell>
-                          <TableCell className="text-right">100%</TableCell>
-                        </TableRow>
+                        {/* Group by unit type */}
+                        {dailyReportTableData.some(row => dailyReportData.items[row.id - 1].unit === "jiwa") && (
+                          <>
+                            <TableRow className="bg-muted/30">
+                              <TableCell colSpan={4} className="font-medium">Jiwa</TableCell>
+                            </TableRow>
+                            {dailyReportTableData
+                              .filter(row => dailyReportData.items[row.id - 1].unit === "jiwa")
+                              .map((row) => (
+                                <TableRow key={`jiwa-${row.id}`}>
+                                  <TableCell>{row.id}</TableCell>
+                                  <TableCell>
+                                    <div className="flex items-center gap-2">
+                                      <div 
+                                        className="w-3 h-3 rounded-full" 
+                                        style={{ backgroundColor: dailyReportData.items[row.id - 1]?.color || "#999" }}
+                                      />
+                                      <span>{row.category}</span>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="text-right">{row.value} jiwa</TableCell>
+                                  <TableCell className="text-right">{row.percentage.toFixed(2)}%</TableCell>
+                                </TableRow>
+                              ))
+                            }
+                            <TableRow className="font-medium bg-muted/20">
+                              <TableCell colSpan={2}>Total Jiwa</TableCell>
+                              <TableCell className="text-right">
+                                {dailyReportTableData
+                                  .filter(row => dailyReportData.items[row.id - 1].unit === "jiwa")
+                                  .reduce((sum, row) => sum + row.value, 0)} jiwa
+                              </TableCell>
+                              <TableCell className="text-right">100%</TableCell>
+                            </TableRow>
+                          </>
+                        )}
+                        
+                        {dailyReportTableData.some(row => dailyReportData.items[row.id - 1].unit === "kg") && (
+                          <>
+                            <TableRow className="bg-muted/30">
+                              <TableCell colSpan={4} className="font-medium">Beras</TableCell>
+                            </TableRow>
+                            {dailyReportTableData
+                              .filter(row => dailyReportData.items[row.id - 1].unit === "kg")
+                              .map((row) => (
+                                <TableRow key={`beras-${row.id}`}>
+                                  <TableCell>{row.id}</TableCell>
+                                  <TableCell>
+                                    <div className="flex items-center gap-2">
+                                      <div 
+                                        className="w-3 h-3 rounded-full" 
+                                        style={{ backgroundColor: dailyReportData.items[row.id - 1]?.color || "#999" }}
+                                      />
+                                      <span>{row.category}</span>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="text-right">{row.value} kg</TableCell>
+                                  <TableCell className="text-right">{row.percentage.toFixed(2)}%</TableCell>
+                                </TableRow>
+                              ))
+                            }
+                            <TableRow className="font-medium bg-muted/20">
+                              <TableCell colSpan={2}>Total Beras</TableCell>
+                              <TableCell className="text-right">
+                                {dailyReportTableData
+                                  .filter(row => dailyReportData.items[row.id - 1].unit === "kg")
+                                  .reduce((sum, row) => sum + row.value, 0)} kg
+                              </TableCell>
+                              <TableCell className="text-right">100%</TableCell>
+                            </TableRow>
+                          </>
+                        )}
+                        
+                        {dailyReportTableData.some(row => dailyReportData.items[row.id - 1].unit === "Rp") && (
+                          <>
+                            <TableRow className="bg-muted/30">
+                              <TableCell colSpan={4} className="font-medium">Uang</TableCell>
+                            </TableRow>
+                            {dailyReportTableData
+                              .filter(row => dailyReportData.items[row.id - 1].unit === "Rp")
+                              .map((row) => (
+                                <TableRow key={`uang-${row.id}`}>
+                                  <TableCell>{row.id}</TableCell>
+                                  <TableCell>
+                                    <div className="flex items-center gap-2">
+                                      <div 
+                                        className="w-3 h-3 rounded-full" 
+                                        style={{ backgroundColor: dailyReportData.items[row.id - 1]?.color || "#999" }}
+                                      />
+                                      <span>{row.category}</span>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="text-right">{formatCurrency(row.value)}</TableCell>
+                                  <TableCell className="text-right">{row.percentage.toFixed(2)}%</TableCell>
+                                </TableRow>
+                              ))
+                            }
+                            <TableRow className="font-medium bg-muted/20">
+                              <TableCell colSpan={2}>Total Uang</TableCell>
+                              <TableCell className="text-right">
+                                {formatCurrency(
+                                  dailyReportTableData
+                                    .filter(row => dailyReportData.items[row.id - 1].unit === "Rp")
+                                    .reduce((sum, row) => sum + row.value, 0)
+                                )}
+                              </TableCell>
+                              <TableCell className="text-right">100%</TableCell>
+                            </TableRow>
+                          </>
+                        )}
                       </>
                     )}
                   </TableBody>
@@ -301,7 +470,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
             </div>
             
             <div className="h-64">
-              {dailyReportData.items[0].count > 0 && (
+              {dailyReportChartData.length > 0 && dailyReportChartData[0].value > 0 && (
                 <ChartContainer config={{}} className="h-full">
                   <PieChart>
                     <Pie
@@ -313,9 +482,13 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
                       fill="#8884d8"
                       dataKey="value"
                     >
-                      {dailyReportChartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={dailyReportData.items[index].color} />
-                      ))}
+                      {dailyReportChartData.map((entry, index) => {
+                        // Find the corresponding item in dailyReportData.items
+                        const item = dailyReportData.items.find(item => item.label === entry.name);
+                        return (
+                          <Cell key={`cell-${index}`} fill={item?.color || "#999"} />
+                        );
+                      })}
                     </Pie>
                     <Legend />
                     <Tooltip content={<ChartTooltipContent />} />

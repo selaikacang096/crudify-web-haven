@@ -36,8 +36,9 @@ export interface TableColumn {
 
 export interface DailyReportItem {
   label: string;
-  count: number;
+  value: number;
   color: string;
+  unit?: string;
 }
 
 export interface DailyReportData {
@@ -49,6 +50,7 @@ export interface DailyReportData {
 export interface DailyReportTableRow {
   id: number;
   category: string;
-  count: number;
+  value: number;
+  unit?: string;
   percentage: number;
 }
