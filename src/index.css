@@ -138,6 +138,32 @@
     @apply px-4 py-3 text-sm;
   }
 
+  /* Report table styles */
+  .report-table {
+    @apply w-full border-collapse bg-gray-100;
+  }
+
+  .report-table th, 
+  .report-table td {
+    @apply border border-gray-300 p-2 text-sm;
+  }
+
+  .report-table th {
+    @apply bg-gray-200 font-medium text-gray-700;
+  }
+
+  .report-table thead th {
+    @apply text-center;
+  }
+
+  .report-table tbody td {
+    @apply text-center;
+  }
+
+  .report-table tfoot td {
+    @apply bg-gray-200 font-semibold;
+  }
+
   /* Form styles */
   .form-container {
     @apply space-y-6 p-6 bg-card rounded-lg border border-border shadow-sm;

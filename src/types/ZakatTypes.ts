@@ -54,3 +54,32 @@ export interface DailyReportTableRow {
   unit?: string;
   percentage: number;
 }
+
+export interface ReportData {
+  date: string;
+  zakatFitrahJiwaBeras: number;
+  zakatFitrahBerasKg: number;
+  zakatFitrahJiwaUang: number;
+  zakatFitrahUang: number;
+  zakatMaal: number;
+  infaqBeras: number;
+  infaqUang: number;
+  fidyahBeras: number;
+  fidyahUang: number;
+  totalBeras: number;
+  totalUang: number;
+}
+
+export interface ReportSummary {
+  totalJiwaBeras: number;
+  totalBerasKg: number; 
+  totalJiwaUang: number;
+  totalZakatFitrahUang: number;
+  totalZakatMaal: number;
+  totalInfaqBeras: number;
+  totalInfaqUang: number;
+  totalFidyahBeras: number;
+  totalFidyahUang: number;
+  totalAllBeras: number;
+  totalAllUang: number;
+}
