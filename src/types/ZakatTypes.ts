@@ -45,3 +45,10 @@ export interface DailyReportData {
   totalRecords: number;
   items: DailyReportItem[];
 }
+
+export interface DailyReportTableRow {
+  id: number;
+  category: string;
+  count: number;
+  percentage: number;
+}

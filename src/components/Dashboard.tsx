@@ -1,6 +1,6 @@
 
 import React, { useMemo } from "react";
-import { ZakatRecord, DailyReportData, DailyReportItem } from "@/types/ZakatTypes";
+import { ZakatRecord, DailyReportData, DailyReportItem, DailyReportTableRow } from "@/types/ZakatTypes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   BarChart, 
@@ -21,6 +21,17 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from "@/components/ui/chart";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+import { toast } from "sonner";
 
 interface DashboardProps {
   data: ZakatRecord[];
@@ -140,11 +151,57 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     };
   }, [data]);
 
+  // Convert dailyReportData to table format
+  const dailyReportTableData: DailyReportTableRow[] = useMemo(() => {
+    const totalCount = dailyReportData.items.reduce((sum, item) => sum + item.count, 0);
+    
+    return dailyReportData.items.map((item, index) => ({
+      id: index + 1,
+      category: item.label,
+      count: item.count,
+      percentage: totalCount > 0 ? (item.count / totalCount) * 100 : 0
+    }));
+  }, [dailyReportData]);
+
   // Convert dailyReportData to chart format
   const dailyReportChartData = dailyReportData.items.map(item => ({
     name: item.label,
     value: item.count
   }));
+
+  // Function to export daily report to Excel
+  const exportToExcel = () => {
+    try {
+      // Create a CSV string
+      let csvContent = "data:text/csv;charset=utf-8,";
+      
+      // Add headers
+      csvContent += "No,Category,Count,Percentage (%)\n";
+      
+      // Add data rows
+      dailyReportTableData.forEach(row => {
+        csvContent += `${row.id},${row.category},${row.count},${row.percentage.toFixed(2)}\n`;
+      });
+      
+      // Add total row
+      const totalCount = dailyReportTableData.reduce((sum, row) => sum + row.count, 0);
+      csvContent += `${dailyReportTableData.length + 1},Total,${totalCount},100\n`;
+      
+      // Create a download link and trigger download
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `Daily_Report_${dailyReportData.date}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success("Daily report exported successfully");
+    } catch (error) {
+      console.error("Error exporting to Excel:", error);
+      toast.error("Failed to export daily report");
+    }
+  };
   
   return (
     <div className="space-y-6 animate-fade-in">
@@ -177,26 +234,69 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       
       {/* Daily Report Section */}
       <Card className="apple-card">
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Daily Report ({dailyReportData.date})</CardTitle>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex items-center gap-1"
+            onClick={exportToExcel}
+          >
+            <Download size={16} />
+            Export
+          </Button>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Today's Contributions: {dailyReportData.totalRecords}</h3>
-              <div className="space-y-2">
-                {dailyReportData.items.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div 
-                        className="w-3 h-3 rounded-full" 
-                        style={{ backgroundColor: item.color }}
-                      />
-                      <span>{item.label}</span>
-                    </div>
-                    <span className="font-medium">{item.count}</span>
-                  </div>
-                ))}
+              
+              <div className="overflow-hidden rounded-lg border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-12">No</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead className="text-right">Count</TableHead>
+                      <TableHead className="text-right">Percentage</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {dailyReportTableData.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={4} className="text-center text-muted-foreground py-6">
+                          No records found for today
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      <>
+                        {dailyReportTableData.map((row) => (
+                          <TableRow key={row.id}>
+                            <TableCell>{row.id}</TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                <div 
+                                  className="w-3 h-3 rounded-full" 
+                                  style={{ backgroundColor: dailyReportData.items[row.id - 1]?.color || "#999" }}
+                                />
+                                <span>{row.category}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-right">{row.count}</TableCell>
+                            <TableCell className="text-right">{row.percentage.toFixed(2)}%</TableCell>
+                          </TableRow>
+                        ))}
+                        <TableRow className="font-medium bg-muted/50">
+                          <TableCell colSpan={2}>Total</TableCell>
+                          <TableCell className="text-right">
+                            {dailyReportTableData.reduce((sum, row) => sum + row.count, 0)}
+                          </TableCell>
+                          <TableCell className="text-right">100%</TableCell>
+                        </TableRow>
+                      </>
+                    )}
+                  </TableBody>
+                </Table>
               </div>
             </div>
             
@@ -218,9 +318,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
                       ))}
                     </Pie>
                     <Legend />
-                    <ChartTooltip>
-                      <ChartTooltipContent />
-                    </ChartTooltip>
+                    <Tooltip content={<ChartTooltipContent />} />
                   </PieChart>
                 </ChartContainer>
               )}
