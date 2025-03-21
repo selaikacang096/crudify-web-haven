@@ -7,7 +7,7 @@ export const getAllRecords = async (): Promise<ZakatRecord[]> => {
   const { data, error } = await supabase
     .from('zakat_records')
     .select('*')
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: true });
   
   if (error) {
     console.error("Error fetching records:", error);
