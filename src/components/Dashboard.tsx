@@ -271,8 +271,8 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       let csvContent = "data:text/csv;charset=utf-8,";
       
       // Add title
-      csvContent += "LAPORAN PENERIMAAN ZISF\n";
-      csvContent += "UPZ DKM\n\n";
+      // csvContent += "LAPORAN PENERIMAAN ZISF\n";
+      // csvContent += "UPZ DKM\n\n";
       
       // Add table headers
       csvContent += "NO,TANGGAL,ZAKAT FITRAH - JIWA,ZAKAT FITRAH - BERAS,ZAKAT FITRAH - JIWA,ZAKAT FITRAH - UANG,ZAKAT MAAL,INFAQ/SHODAQOH - BERAS,INFAQ/SHODAQOH - UANG,FIDYAH - BERAS,FIDYAH - UANG,TOTAL BERAS (Kg),TOTAL UANG\n";
@@ -306,7 +306,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="apple-card">
           <CardHeader className="pb-2">
-            <CardTitle className="text-muted-foreground text-sm font-normal">Total Contributions</CardTitle>
+            <CardTitle className="text-muted-foreground text-sm font-normal">Total Donatur</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{totals.totalRecords}</div>
@@ -434,7 +434,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         {/* Beras Chart */}
         <Card className="apple-card">
           <CardHeader>
-            <CardTitle>Distribution of Beras</CardTitle>
+            <CardTitle>Distribusi Beras</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-80">
@@ -457,7 +457,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         {/* Uang Chart */}
         <Card className="apple-card">
           <CardHeader>
-            <CardTitle>Distribution of Uang</CardTitle>
+            <CardTitle>Distribusi Uang</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-80">

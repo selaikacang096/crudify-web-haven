@@ -311,7 +311,6 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
                     value={formData.zakatFitrah.uang}
                     onChange={handleInputChange}
                     placeholder="0"
-                    readOnly
                     className="bg-gray-100"
                   />
                 </div>

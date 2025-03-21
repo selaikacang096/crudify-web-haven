@@ -132,18 +132,18 @@ const ZakatTable: React.FC<ZakatTableProps> = ({ data, onDelete }) => {
         <table className="data-table w-max min-w-full">
           <thead>
             <tr className="bg-secondary/80">
-              <th className="text-center sticky left-0 z-10 bg-secondary/80">No</th>
-              <th className="text-center">Penginput</th>
-              <th className="text-center">Tanggal</th>
-              <th className="text-center">Nama</th>
-              <th className="text-center">Alamat</th>
+              <th className="text-center align-middle sticky left-0 z-10 bg-secondary/80">No</th>
+              <th className="text-center align-middle">Penginput</th>
+              <th className="text-center align-middle">Tanggal</th>
+              <th className="text-center align-middle">Nama</th>
+              <th className="text-center align-middle">Alamat</th>
               <th colSpan={4} className="text-center">Zakat Fitrah</th>
-              <th className="text-center">Zakat Maal</th>
+              <th className="text-center align-middle">Zakat Maal</th>
               <th colSpan={2} className="text-center">Infaq</th>
               <th colSpan={2} className="text-center">Fidyah</th>
-              <th className="text-center">Total Beras</th>
-              <th className="text-center">Total Uang</th>
-              <th className="text-center sticky right-0 z-10 bg-secondary/80">Actions</th>
+              <th className="text-center align-middle">Total Beras</th>
+              <th className="text-center align-middle">Total Uang</th>
+              <th className="text-center align-middle sticky right-0 z-10 bg-secondary/80">Actions</th>
             </tr>
             <tr className="bg-secondary/60">
               <th className="sticky left-0 z-10 bg-secondary/60"></th>
