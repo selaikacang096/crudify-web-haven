@@ -85,13 +85,32 @@ export const useZakatForm = ({ initialData, isEdit = false }: UseZakatFormProps)
     // Handle nested properties
     if (name.includes(".")) {
       const [parent, child] = name.split(".");
-      setFormData(prev => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent as keyof ZakatFormData],
-          [child]: value === "" ? 0 : Number(value)
-        }
-      }));
+      
+      if (parent === "zakatFitrah") {
+        setFormData(prev => ({
+          ...prev,
+          zakatFitrah: {
+            ...prev.zakatFitrah,
+            [child]: value === "" ? 0 : Number(value)
+          }
+        }));
+      } else if (parent === "infaq") {
+        setFormData(prev => ({
+          ...prev,
+          infaq: {
+            ...prev.infaq,
+            [child]: value === "" ? 0 : Number(value)
+          }
+        }));
+      } else if (parent === "fidyah") {
+        setFormData(prev => ({
+          ...prev,
+          fidyah: {
+            ...prev.fidyah,
+            [child]: value === "" ? 0 : Number(value)
+          }
+        }));
+      }
     } else {
       setFormData(prev => ({
         ...prev,
