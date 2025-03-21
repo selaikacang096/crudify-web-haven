@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteRecord } from "@/utils/zakatStorage";
+import { deleteRecord } from "@/services/zakatService";
 import { toast } from "sonner";
 
 interface ZakatTableProps {
@@ -29,6 +29,7 @@ const ZakatTable: React.FC<ZakatTableProps> = ({ data, onDelete }) => {
   const tableEndRef = useRef<HTMLDivElement>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   
   // Format currency for display
   const formatCurrency = (amount: number) => {
@@ -45,17 +46,25 @@ const ZakatTable: React.FC<ZakatTableProps> = ({ data, onDelete }) => {
   };
   
   // Handle record deletion
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (recordToDelete) {
-      const deleted = deleteRecord(recordToDelete);
-      if (deleted) {
-        toast.success("Record deleted successfully");
-        if (onDelete) onDelete();
-      } else {
-        toast.error("Failed to delete record");
+      setIsDeleting(true);
+      try {
+        const deleted = await deleteRecord(recordToDelete);
+        if (deleted) {
+          toast.success("Record deleted successfully");
+          if (onDelete) onDelete();
+        } else {
+          toast.error("Failed to delete record");
+        }
+      } catch (error) {
+        console.error("Error deleting record:", error);
+        toast.error("An error occurred while deleting the record");
+      } finally {
+        setIsDeleting(false);
+        setRecordToDelete(null);
+        setOpenDeleteDialog(false);
       }
-      setRecordToDelete(null);
-      setOpenDeleteDialog(false);
     }
   };
   
@@ -236,9 +245,13 @@ const ZakatTable: React.FC<ZakatTableProps> = ({ data, onDelete }) => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Delete
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDelete} 
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -7,25 +7,33 @@ import Dashboard from "@/components/Dashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ZakatRecord } from "@/types/ZakatTypes";
-import { getAllRecords, initializeWithSampleData } from "@/utils/zakatStorage";
+import { getAllRecords, initializeWithSampleData } from "@/services/zakatService";
 import { PlusCircle, BarChart, Table } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const Index: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [records, setRecords] = useState<ZakatRecord[]>([]);
   const [activeTab, setActiveTab] = useState("dashboard");
   
-  // Load records and initialize sample data if empty
-  const loadRecords = () => {
-    initializeWithSampleData(); // Initialize with sample data if empty
-    const data = getAllRecords();
-    setRecords(data);
-  };
+  // Load records using React Query
+  const { data: records = [], refetch, isLoading, error } = useQuery({
+    queryKey: ['zakatRecords'],
+    queryFn: getAllRecords,
+    onError: () => {
+      toast.error("Failed to load records. Please try again later.");
+    }
+  });
+  
+  // Initialize sample data if needed
+  useEffect(() => {
+    initializeWithSampleData().catch(err => {
+      console.error("Error initializing sample data:", err);
+    });
+  }, []);
   
   useEffect(() => {
-    loadRecords();
-    
     // Check for tab param in URL
     const searchParams = new URLSearchParams(location.search);
     const tabParam = searchParams.get('tab');
@@ -88,13 +96,32 @@ const Index: React.FC = () => {
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="dashboard" className="space-y-4">
-            <Dashboard data={records} />
-          </TabsContent>
-          
-          <TabsContent value="records" className="space-y-4">
-            <ZakatTable data={records} onDelete={loadRecords} />
-          </TabsContent>
+          {isLoading ? (
+            <div className="flex items-center justify-center h-40">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center p-6 text-destructive">
+              <p>Error loading data. Please try again.</p>
+              <Button 
+                variant="outline" 
+                className="mt-4" 
+                onClick={() => refetch()}
+              >
+                Retry
+              </Button>
+            </div>
+          ) : (
+            <>
+              <TabsContent value="dashboard" className="space-y-4">
+                <Dashboard data={records} />
+              </TabsContent>
+              
+              <TabsContent value="records" className="space-y-4">
+                <ZakatTable data={records} onDelete={() => refetch()} />
+              </TabsContent>
+            </>
+          )}
         </Tabs>
       </div>
     </Layout>

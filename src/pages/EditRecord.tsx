@@ -1,32 +1,27 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import ZakatForm from "@/components/ZakatForm";
-import { getRecordById } from "@/utils/zakatStorage";
+import { getRecordById } from "@/services/zakatService";
 import { ZakatRecord } from "@/types/ZakatTypes";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 
 const EditRecord: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [record, setRecord] = useState<ZakatRecord | null>(null);
-  const [loading, setLoading] = useState(true);
   
-  useEffect(() => {
-    if (id) {
-      const recordData = getRecordById(id);
-      if (recordData) {
-        setRecord(recordData);
-      } else {
-        toast.error("Record not found");
-        navigate("/");
-      }
+  const { data: record, isLoading, error } = useQuery({
+    queryKey: ['zakatRecord', id],
+    queryFn: () => id ? getRecordById(id) : null,
+    onError: () => {
+      toast.error("Failed to load record");
+      navigate("/");
     }
-    setLoading(false);
-  }, [id, navigate]);
+  });
   
-  if (loading) {
+  if (isLoading) {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-[60vh]">
@@ -39,7 +34,7 @@ const EditRecord: React.FC = () => {
     );
   }
   
-  if (!record) {
+  if (error || !record) {
     return (
       <Layout>
         <div className="text-center py-12">

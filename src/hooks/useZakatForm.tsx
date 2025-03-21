@@ -1,10 +1,11 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZakatFormData, ZakatRecord, ZAKAT_FITRAH_RATE_PER_JIWA } from "@/types/ZakatTypes";
-import { createRecord, updateRecord } from "@/utils/zakatStorage";
+import { createRecord, updateRecord } from "@/services/zakatService";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 interface UseZakatFormProps {
   initialData?: ZakatRecord;
@@ -130,13 +131,13 @@ export const useZakatForm = ({ initialData, isEdit = false }: UseZakatFormProps)
   };
   
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
       if (isEdit && initialData) {
-        const updated = updateRecord(initialData.id, formData);
+        const updated = await updateRecord(initialData.id, formData);
         if (updated) {
           toast.success("Record updated successfully");
           navigate("/");
@@ -144,7 +145,7 @@ export const useZakatForm = ({ initialData, isEdit = false }: UseZakatFormProps)
           toast.error("Failed to update record");
         }
       } else {
-        createRecord(formData);
+        await createRecord(formData);
         toast.success("Record created successfully");
         navigate("/?tab=records&scrollToBottom=true");
       }
