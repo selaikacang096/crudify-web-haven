@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZakatFormData, ZakatRecord, ZAKAT_FITRAH_RATE_PER_JIWA, PENGINPUT_OPTIONS } from "@/types/ZakatTypes";
@@ -86,13 +85,18 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
     // Handle nested properties
     if (name.includes(".")) {
       const [parent, child] = name.split(".");
-      setFormData(prev => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent as keyof ZakatFormData],
-          [child]: value === "" ? 0 : Number(value)
+      setFormData(prev => {
+        if (parent === "zakatFitrah" || parent === "infaq" || parent === "fidyah") {
+          return {
+            ...prev,
+            [parent]: {
+              ...(prev[parent as keyof ZakatFormData] as Record<string, any>),
+              [child]: value === "" ? 0 : Number(value)
+            }
+          };
         }
-      }));
+        return prev;
+      });
     } else {
       setFormData(prev => ({
         ...prev,
