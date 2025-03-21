@@ -83,3 +83,17 @@ export interface ReportSummary {
   totalAllBeras: number;
   totalAllUang: number;
 }
+
+export const ZAKAT_FITRAH_RATE_PER_JIWA = 37500;
+
+export const PENGINPUT_OPTIONS = [
+  "Rais", 
+  "Rizal", 
+  "Ismail", 
+  "Raya", 
+  "Arif", 
+  "Hendri", 
+  "Hasbi", 
+  "Ibnu", 
+  "Asep Ali"
+];

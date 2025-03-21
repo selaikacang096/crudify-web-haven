@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ZakatFormData, ZakatRecord } from "@/types/ZakatTypes";
+import { ZakatFormData, ZakatRecord, ZAKAT_FITRAH_RATE_PER_JIWA, PENGINPUT_OPTIONS } from "@/types/ZakatTypes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,13 @@ import { createRecord, updateRecord } from "@/utils/zakatStorage";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { Save, RotateCcw, ArrowLeft } from "lucide-react";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
 
 interface ZakatFormProps {
   initialData?: ZakatRecord;
@@ -57,6 +64,20 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
       });
     }
   }, [initialData, isEdit]);
+
+  // Effect to calculate zakat fitrah uang based on jiwa count
+  useEffect(() => {
+    if (formData.zakatFitrah.jiwaUang > 0) {
+      const calculatedUang = formData.zakatFitrah.jiwaUang * ZAKAT_FITRAH_RATE_PER_JIWA;
+      setFormData(prev => ({
+        ...prev,
+        zakatFitrah: {
+          ...prev.zakatFitrah,
+          uang: calculatedUang
+        }
+      }));
+    }
+  }, [formData.zakatFitrah.jiwaUang]);
   
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +102,14 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
       }));
     }
   };
+
+  // Handle select changes
+  const handleSelectChange = (value: string, name: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
   
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
@@ -99,7 +128,7 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
       } else {
         createRecord(formData);
         toast.success("Record created successfully");
-        navigate("/");
+        navigate("/?tab=records&scrollToBottom=true");
       }
     } catch (error) {
       console.error("Form submission error:", error);
@@ -173,14 +202,22 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="penginput">Penginput</Label>
-                  <Input
-                    id="penginput"
-                    name="penginput"
+                  <Select
                     value={formData.penginput}
-                    onChange={handleInputChange}
-                    placeholder="Input person name"
+                    onValueChange={(value) => handleSelectChange(value, "penginput")}
                     required
-                  />
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select penginput" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PENGINPUT_OPTIONS.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="tanggal">Tanggal</Label>
@@ -265,7 +302,7 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="zakatFitrah.uang">Uang</Label>
+                  <Label htmlFor="zakatFitrah.uang">Uang (Auto-calculated: Rp. {ZAKAT_FITRAH_RATE_PER_JIWA.toLocaleString('id-ID')}/jiwa)</Label>
                   <Input
                     id="zakatFitrah.uang"
                     name="zakatFitrah.uang"
@@ -274,6 +311,8 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
                     value={formData.zakatFitrah.uang}
                     onChange={handleInputChange}
                     placeholder="0"
+                    readOnly
+                    className="bg-gray-100"
                   />
                 </div>
               </div>

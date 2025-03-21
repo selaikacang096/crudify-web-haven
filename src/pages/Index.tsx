@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import ZakatTable from "@/components/ZakatTable";
 import Dashboard from "@/components/Dashboard";
@@ -11,6 +11,8 @@ import { getAllRecords, initializeWithSampleData } from "@/utils/zakatStorage";
 import { PlusCircle, BarChart, Table } from "lucide-react";
 
 const Index: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [records, setRecords] = useState<ZakatRecord[]>([]);
   const [activeTab, setActiveTab] = useState("dashboard");
   
@@ -23,7 +25,30 @@ const Index: React.FC = () => {
   
   useEffect(() => {
     loadRecords();
-  }, []);
+    
+    // Check for tab param in URL
+    const searchParams = new URLSearchParams(location.search);
+    const tabParam = searchParams.get('tab');
+    if (tabParam && (tabParam === 'dashboard' || tabParam === 'records')) {
+      setActiveTab(tabParam);
+    }
+  }, [location.search]);
+  
+  // Handle tab change
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    
+    // Update URL without reloading the page
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('tab', value);
+    
+    // Preserve other query params except scrollToBottom
+    if (searchParams.has('scrollToBottom')) {
+      searchParams.delete('scrollToBottom');
+    }
+    
+    navigate(`?${searchParams.toString()}`, { replace: true });
+  };
   
   return (
     <Layout>
@@ -49,7 +74,7 @@ const Index: React.FC = () => {
         <Tabs 
           defaultValue="dashboard" 
           value={activeTab} 
-          onValueChange={setActiveTab}
+          onValueChange={handleTabChange}
           className="space-y-4"
         >
           <TabsList className="grid w-full sm:w-auto sm:inline-grid grid-cols-2 sm:grid-cols-2">

@@ -1,5 +1,5 @@
 
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { ZakatRecord, ReportData, ReportSummary } from "@/types/ZakatTypes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -11,7 +11,7 @@ import {
   Tooltip, 
   ResponsiveContainer
 } from "recharts";
-import { format, parse, isValid, addDays } from "date-fns";
+import { format, parse, isValid } from "date-fns";
 import {
   Table,
   TableBody,
@@ -22,14 +22,18 @@ import {
   TableFooter
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, FileDown, FilePdf } from "lucide-react";
 import { toast } from "sonner";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 interface DashboardProps {
   data: ZakatRecord[];
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ data }) => {
+  const reportTableRef = useRef<HTMLDivElement>(null);
+  
   // Calculate totals
   const totals = useMemo(() => {
     if (!data.length) return {
@@ -202,6 +206,64 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     }
   };
 
+  // Function to export daily report to PDF
+  const exportToPDF = async () => {
+    if (!reportTableRef.current) {
+      toast.error("Could not generate PDF");
+      return;
+    }
+
+    try {
+      toast.info("Generating PDF...", { duration: 2000 });
+      
+      const element = reportTableRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        logging: false,
+        useCORS: true,
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      
+      // Calculate PDF dimensions based on the table
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 295; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      // Add title
+      pdf.setFontSize(14);
+      pdf.text('LAPORAN PENERIMAAN ZISF', imgWidth / 2, 10, { align: 'center' });
+      pdf.text('UPZ DKM', imgWidth / 2, 18, { align: 'center' });
+      
+      let position = 25;
+      
+      // Determine if we need multiple pages
+      let heightLeft = imgHeight;
+      
+      // Add first page
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= (pageHeight - position);
+      
+      // Add additional pages if needed
+      while (heightLeft > 0) {
+        position = 0;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position - (pageHeight - 25), imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      
+      // Save PDF
+      pdf.save(`LAPORAN_PENERIMAAN_ZISF_${format(new Date(), 'yyyyMMdd')}.pdf`);
+      
+      toast.success("PDF exported successfully");
+    } catch (error) {
+      console.error("Error exporting to PDF:", error);
+      toast.error("Failed to export PDF");
+    }
+  };
+
   // Function to export daily report to Excel
   const exportToExcel = () => {
     try {
@@ -272,18 +334,29 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       <Card className="apple-card">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>LAPORAN PENERIMAAN ZISF</CardTitle>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex items-center gap-1"
-            onClick={exportToExcel}
-          >
-            <Download size={16} />
-            Export
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex items-center gap-1"
+              onClick={exportToExcel}
+            >
+              <FileDown size={16} />
+              Export CSV
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex items-center gap-1"
+              onClick={exportToPDF}
+            >
+              <FilePdf size={16} />
+              Export PDF
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" ref={reportTableRef}>
             <div className="inline-block min-w-full align-middle">
               <Table>
                 <TableHeader>

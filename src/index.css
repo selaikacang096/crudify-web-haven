@@ -119,7 +119,7 @@
 @layer components {
   /* Table styles */
   .table-container {
-    @apply w-full overflow-auto pb-4;
+    @apply w-full overflow-auto pb-4 max-h-[70vh];
   }
 
   .data-table {
@@ -127,7 +127,7 @@
   }
 
   .data-table th {
-    @apply bg-secondary/50 backdrop-blur-sm sticky top-0 px-4 py-3 text-left text-sm font-medium text-muted-foreground;
+    @apply bg-secondary/80 backdrop-blur-sm sticky top-0 px-4 py-3 text-center text-sm font-medium text-muted-foreground z-10 border-b border-border;
   }
 
   .data-table tr {
