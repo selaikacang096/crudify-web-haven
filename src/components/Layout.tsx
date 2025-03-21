@@ -1,8 +1,10 @@
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Home, Plus, List, Settings } from "lucide-react";
+import { Home, Plus, List, Settings, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,7 +12,14 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -42,6 +51,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               >
                 Add Record
               </Link>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleLogout}
+                className="ml-2 flex items-center gap-1"
+              >
+                <LogOut size={16} />
+                <span className="hidden md:inline">Logout</span>
+              </Button>
             </nav>
           </div>
         </div>
@@ -85,6 +103,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Plus size={20} />
             <span className="text-xs mt-1">Add</span>
           </Link>
+          <button
+            onClick={handleLogout}
+            className="flex flex-col items-center p-3 transition-colors text-muted-foreground hover:text-primary"
+          >
+            <LogOut size={20} />
+            <span className="text-xs mt-1">Logout</span>
+          </button>
         </nav>
       </div>
     </div>
