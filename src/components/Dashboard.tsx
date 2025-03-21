@@ -1,3 +1,4 @@
+
 import React, { useMemo, useRef } from "react";
 import { ZakatRecord, ReportData, ReportSummary } from "@/types/ZakatTypes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +22,7 @@ import {
   TableFooter
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download, FileDown, FileText } from "lucide-react";
+import { Download, FileDown, FilePdf } from "lucide-react";
 import { toast } from "sonner";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -33,6 +34,7 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ data }) => {
   const reportTableRef = useRef<HTMLDivElement>(null);
   
+  // Calculate totals
   const totals = useMemo(() => {
     if (!data.length) return {
       totalBeras: 0,
@@ -74,6 +76,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     });
   }, [data]);
   
+  // Format currency
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -82,6 +85,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     }).format(amount);
   };
   
+  // Prepare chart data
   const berasChartData = [
     { name: 'Zakat Fitrah', value: totals.zakatFitrahBeras },
     { name: 'Infaq', value: totals.infaqBeras },
@@ -95,6 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     { name: 'Fidyah', value: totals.fidyahUang },
   ];
 
+  // Group records by date
   const recordsByDate = useMemo(() => {
     const groupedRecords: Record<string, ZakatRecord[]> = {};
     
@@ -109,9 +114,11 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     return groupedRecords;
   }, [data]);
 
+  // Prepare daily report data
   const reportData: ReportData[] = useMemo(() => {
     const reports: ReportData[] = [];
     
+    // Process each date group
     Object.entries(recordsByDate).forEach(([date, records]) => {
       const zakatFitrahJiwaBeras = records.reduce((sum, record) => sum + record.zakatFitrah.jiwaBeras, 0);
       const zakatFitrahBerasKg = records.reduce((sum, record) => sum + record.zakatFitrah.berasKg, 0);
@@ -141,6 +148,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       });
     });
     
+    // Sort by date
     reports.sort((a, b) => {
       const dateA = parse(a.date, 'yyyy-MM-dd', new Date());
       const dateB = parse(b.date, 'yyyy-MM-dd', new Date());
@@ -154,6 +162,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     return reports;
   }, [recordsByDate]);
 
+  // Calculate summary totals
   const reportSummary: ReportSummary = useMemo(() => {
     return reportData.reduce((acc, report) => {
       return {
@@ -184,6 +193,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     });
   }, [reportData]);
 
+  // Format date for display
   const formatDisplayDate = (dateStr: string) => {
     try {
       const date = parse(dateStr, 'yyyy-MM-dd', new Date());
@@ -196,6 +206,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     }
   };
 
+  // Function to export daily report to PDF
   const exportToPDF = async () => {
     if (!reportTableRef.current) {
       toast.error("Could not generate PDF");
@@ -214,23 +225,28 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       
       const imgData = canvas.toDataURL('image/png');
       
+      // Calculate PDF dimensions based on the table
       const imgWidth = 210; // A4 width in mm
       const pageHeight = 295; // A4 height in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
       const pdf = new jsPDF('p', 'mm', 'a4');
       
+      // Add title
       pdf.setFontSize(14);
       pdf.text('LAPORAN PENERIMAAN ZISF', imgWidth / 2, 10, { align: 'center' });
       pdf.text('UPZ DKM', imgWidth / 2, 18, { align: 'center' });
       
       let position = 25;
       
+      // Determine if we need multiple pages
       let heightLeft = imgHeight;
       
+      // Add first page
       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       heightLeft -= (pageHeight - position);
       
+      // Add additional pages if needed
       while (heightLeft > 0) {
         position = 0;
         pdf.addPage();
@@ -238,6 +254,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         heightLeft -= pageHeight;
       }
       
+      // Save PDF
       pdf.save(`LAPORAN_PENERIMAAN_ZISF_${format(new Date(), 'yyyyMMdd')}.pdf`);
       
       toast.success("PDF exported successfully");
@@ -247,21 +264,28 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     }
   };
 
+  // Function to export daily report to Excel
   const exportToExcel = () => {
     try {
+      // Create a CSV string
       let csvContent = "data:text/csv;charset=utf-8,";
       
+      // Add title
       csvContent += "LAPORAN PENERIMAAN ZISF\n";
       csvContent += "UPZ DKM\n\n";
       
+      // Add table headers
       csvContent += "NO,TANGGAL,ZAKAT FITRAH - JIWA,ZAKAT FITRAH - BERAS,ZAKAT FITRAH - JIWA,ZAKAT FITRAH - UANG,ZAKAT MAAL,INFAQ/SHODAQOH - BERAS,INFAQ/SHODAQOH - UANG,FIDYAH - BERAS,FIDYAH - UANG,TOTAL BERAS (Kg),TOTAL UANG\n";
       
+      // Add table data
       reportData.forEach((report, index) => {
         csvContent += `${index + 1},${formatDisplayDate(report.date)},${report.zakatFitrahJiwaBeras},${report.zakatFitrahBerasKg} Kg,${report.zakatFitrahJiwaUang},${formatCurrency(report.zakatFitrahUang)},${formatCurrency(report.zakatMaal)},${report.infaqBeras} Kg,${formatCurrency(report.infaqUang)},${report.fidyahBeras} Kg,${formatCurrency(report.fidyahUang)},${report.totalBeras} Kg,${formatCurrency(report.totalUang)}\n`;
       });
       
+      // Add summary row
       csvContent += `TOTAL,,${reportSummary.totalJiwaBeras},${reportSummary.totalBerasKg} Kg,${reportSummary.totalJiwaUang},${formatCurrency(reportSummary.totalZakatFitrahUang)},${formatCurrency(reportSummary.totalZakatMaal)},${reportSummary.totalInfaqBeras} Kg,${formatCurrency(reportSummary.totalInfaqUang)},${reportSummary.totalFidyahBeras} Kg,${formatCurrency(reportSummary.totalFidyahUang)},${reportSummary.totalAllBeras} Kg,${formatCurrency(reportSummary.totalAllUang)}\n`;
       
+      // Create a download link and trigger download
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
       link.setAttribute("href", encodedUri);
@@ -276,7 +300,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       toast.error("Failed to export report");
     }
   };
-
+  
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -306,6 +330,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         </Card>
       </div>
       
+      {/* Daily Report Section */}
       <Card className="apple-card">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>LAPORAN PENERIMAAN ZISF</CardTitle>
@@ -325,7 +350,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
               className="flex items-center gap-1"
               onClick={exportToPDF}
             >
-              <FileText size={16} />
+              <FilePdf size={16} />
               Export PDF
             </Button>
           </div>
@@ -406,6 +431,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       </Card>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Beras Chart */}
         <Card className="apple-card">
           <CardHeader>
             <CardTitle>Distribution of Beras</CardTitle>
@@ -428,6 +454,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
           </CardContent>
         </Card>
         
+        {/* Uang Chart */}
         <Card className="apple-card">
           <CardHeader>
             <CardTitle>Distribution of Uang</CardTitle>
