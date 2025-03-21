@@ -57,10 +57,21 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
         tanggal: format(new Date(initialData.tanggal), "yyyy-MM-dd"),
         nama: initialData.nama,
         alamat: initialData.alamat,
-        zakatFitrah: { ...initialData.zakatFitrah },
+        zakatFitrah: { 
+          jiwaBeras: initialData.zakatFitrah.jiwaBeras,
+          berasKg: initialData.zakatFitrah.berasKg,
+          jiwaUang: initialData.zakatFitrah.jiwaUang,
+          uang: initialData.zakatFitrah.uang
+        },
         zakatMaal: initialData.zakatMaal,
-        infaq: { ...initialData.infaq },
-        fidyah: { ...initialData.fidyah }
+        infaq: { 
+          beras: initialData.infaq.beras,
+          uang: initialData.infaq.uang
+        },
+        fidyah: { 
+          beras: initialData.fidyah.beras,
+          uang: initialData.fidyah.uang
+        }
       });
     }
   }, [initialData, isEdit]);
@@ -146,10 +157,21 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
         tanggal: format(new Date(initialData.tanggal), "yyyy-MM-dd"),
         nama: initialData.nama,
         alamat: initialData.alamat,
-        zakatFitrah: { ...initialData.zakatFitrah },
+        zakatFitrah: { 
+          jiwaBeras: initialData.zakatFitrah.jiwaBeras,
+          berasKg: initialData.zakatFitrah.berasKg,
+          jiwaUang: initialData.zakatFitrah.jiwaUang,
+          uang: initialData.zakatFitrah.uang
+        },
         zakatMaal: initialData.zakatMaal,
-        infaq: { ...initialData.infaq },
-        fidyah: { ...initialData.fidyah }
+        infaq: { 
+          beras: initialData.infaq.beras,
+          uang: initialData.infaq.uang
+        },
+        fidyah: { 
+          beras: initialData.fidyah.beras,
+          uang: initialData.fidyah.uang
+        }
       });
     } else {
       setFormData({
