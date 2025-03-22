@@ -20,10 +20,12 @@ const List: React.FC = () => {
     }
   });
 
-  // Sort records to show newest on top
-  const sortedRecords = [...records].sort((a, b) => 
-    new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime()
-  );
+  // Sort records to show newest on top (fixed sorting logic)
+  const sortedRecords = [...records].sort((a, b) => {
+    const dateA = new Date(a.tanggal).getTime();
+    const dateB = new Date(b.tanggal).getTime();
+    return dateB - dateA; // Sort by date in descending order
+  });
   
   return (
     <Layout>
