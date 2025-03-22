@@ -19,7 +19,7 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <Card className="apple-card">
         <CardHeader className="pb-2">
-          <CardTitle className="text-muted-foreground text-sm font-normal">Total Donatur</CardTitle>
+          <CardTitle className="text-muted-foreground text-sm font-normal">Total Muzakki</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">{totalRecords}</div>
