@@ -29,7 +29,7 @@ const ZakatMaalSection: React.FC<ZakatMaalSectionProps> = ({
             min="0"
             value={zakatMaal}
             onChange={onInputChange}
-            placeholder="0"
+            
           />
         </div>
       </CardContent>
