@@ -1,50 +1,80 @@
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import ZakatForm from "@/components/ZakatForm";
-import { getRecordById } from "@/services/zakatService";
-import { ZakatRecord } from "@/types/ZakatTypes";
-import { toast } from "sonner";
+import { useZakatForm } from "@/hooks/useZakatForm";
+import { getRecordById, updateRecord } from "@/services/zakatService";
 import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const EditRecord: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { formData, setFormData, resetForm } = useZakatForm();
   
   const { data: record, isLoading, error } = useQuery({
     queryKey: ['zakatRecord', id],
-    queryFn: () => id ? getRecordById(id) : null,
-    onError: () => {
-      toast.error("Failed to load record");
-      navigate("/");
+    queryFn: () => getRecordById(id as string),
+    enabled: !!id,
+    meta: {
+      onError: () => {
+        toast.error("Failed to load record data");
+      }
     }
   });
+  
+  useEffect(() => {
+    if (record) {
+      setFormData({
+        penginput: record.penginput,
+        tanggal: record.tanggal,
+        nama: record.nama,
+        alamat: record.alamat,
+        zakatFitrah: { ...record.zakatFitrah },
+        zakatMaal: record.zakatMaal,
+        infaq: { ...record.infaq },
+        fidyah: { ...record.fidyah },
+      });
+    }
+  }, [record, setFormData]);
+  
+  const handleSubmit = async (data: typeof formData) => {
+    if (!id) return;
+    
+    try {
+      const updated = await updateRecord(id, data);
+      if (updated) {
+        toast.success("Record updated successfully");
+        navigate('/?tab=records', { replace: true });
+      }
+    } catch (error) {
+      console.error("Error updating record:", error);
+      toast.error("Failed to update record");
+    }
+  };
   
   if (isLoading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">Loading record...</p>
-          </div>
+        <div className="flex justify-center items-center h-[60vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
       </Layout>
     );
   }
   
-  if (error || !record) {
+  if (error || !id) {
     return (
       <Layout>
         <div className="text-center py-12">
-          <h2 className="text-2xl font-semibold mb-2">Record Not Found</h2>
-          <p className="text-muted-foreground mb-6">The record you're looking for doesn't exist or has been deleted.</p>
+          <h2 className="text-2xl font-bold text-destructive mb-4">Error Loading Record</h2>
+          <p className="mb-6">The record you're trying to edit could not be found or an error occurred.</p>
           <button 
-            onClick={() => navigate("/")}
-            className="text-primary hover:text-primary/80"
+            onClick={() => navigate('/')}
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
           >
-            Return to home
+            Back to Home
           </button>
         </div>
       </Layout>
@@ -53,7 +83,15 @@ const EditRecord: React.FC = () => {
   
   return (
     <Layout>
-      <ZakatForm initialData={record} isEdit={true} />
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6">Edit Zakat Record</h1>
+        <ZakatForm 
+          initialData={formData} 
+          onSubmit={handleSubmit} 
+          onReset={resetForm}
+          isEdit={true}
+        />
+      </div>
     </Layout>
   );
 };

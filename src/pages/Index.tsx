@@ -21,8 +21,10 @@ const Index: React.FC = () => {
   const { data: records = [], refetch, isLoading, error } = useQuery({
     queryKey: ['zakatRecords'],
     queryFn: getAllRecords,
-    onError: () => {
-      toast.error("Failed to load records. Please try again later.");
+    meta: {
+      onError: () => {
+        toast.error("Failed to load records. Please try again later.");
+      }
     }
   });
   
