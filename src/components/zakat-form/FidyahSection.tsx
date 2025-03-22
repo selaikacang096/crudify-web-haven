@@ -20,7 +20,6 @@ const FidyahSection: React.FC<FidyahSectionProps> = ({
     <Card className="apple-card">
       <CardHeader>
         <CardTitle>Fidyah</CardTitle>
-        <CardDescription>Enter fidyah details</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">

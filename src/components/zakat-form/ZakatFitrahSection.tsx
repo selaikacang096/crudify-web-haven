@@ -32,7 +32,6 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
     <Card className="apple-card">
       <CardHeader>
         <CardTitle>Zakat Fitrah</CardTitle>
-        <CardDescription>Enter zakat fitrah details</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

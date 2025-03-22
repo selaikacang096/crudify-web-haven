@@ -17,7 +17,6 @@ const ZakatMaalSection: React.FC<ZakatMaalSectionProps> = ({
     <Card className="apple-card">
       <CardHeader>
         <CardTitle>Zakat Maal</CardTitle>
-        <CardDescription>Enter zakat maal amount</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">

@@ -20,7 +20,6 @@ const InfaqSection: React.FC<InfaqSectionProps> = ({
     <Card className="apple-card">
       <CardHeader>
         <CardTitle>Infaq</CardTitle>
-        <CardDescription>Enter infaq details</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
