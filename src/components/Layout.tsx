@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Home, Plus, List, LogOut, BarChart, ViewList } from "lucide-react";
+import { Home, Plus, List, LogOut, BarChart } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 
@@ -99,7 +99,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               isActive("/list") ? "text-primary" : "text-muted-foreground"
             )}
           >
-            <ViewList size={20} />
+            <List size={20} />
             <span className="text-xs mt-1">List</span>
           </Link>
           <Link 
