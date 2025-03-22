@@ -29,9 +29,12 @@ const List: React.FC = () => {
   });
 
   // Sort records to show newest on top
-  const sortedRecords = [...records].sort((a, b) => 
-    new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime()
-  );
+  // const sortedRecords = [...records].sort((a, b) => 
+  //   new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime()
+  // );
+
+  const sortedRecords = [...records].reverse(); // Membalik urutan dari hasil query
+
   
   // Handle record deletion
   const handleDelete = async () => {
