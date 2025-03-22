@@ -6,29 +6,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 interface FidyahSectionProps {
   fidyah: {
     beras: number;
-    uang: string; // Ubah ke string untuk menampung format rupiah
+    uang: number;
   };
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const formatRupiah = (value: string) => {
-  // Hapus karakter non-digit
-  const numericValue = value.replace(/\D/g, "");
-  // Format ke rupiah
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0
-  }).format(Number(numericValue));
-};
-
-const FidyahSection: React.FC<FidyahSectionProps> = ({ fidyah, onInputChange }) => {
-  const handleRupiahChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formattedValue = formatRupiah(e.target.value);
-    e.target.value = formattedValue; // Perbarui tampilan input
-    onInputChange(e); // Kirim event ke parent
-  };
-
+const FidyahSection: React.FC<FidyahSectionProps> = ({
+  fidyah,
+  onInputChange
+}) => {
   return (
     <Card className="apple-card">
       <CardHeader>
@@ -54,10 +40,11 @@ const FidyahSection: React.FC<FidyahSectionProps> = ({ fidyah, onInputChange }) 
           <Input
             id="fidyah.uang"
             name="fidyah.uang"
-            type="text" // Ubah ke text agar format rupiah bisa diterapkan
+            type="number"
+            min="0"
             value={fidyah.uang}
-            onChange={handleRupiahChange}
-            placeholder="Rp 0"
+            onChange={onInputChange}
+            placeholder="0"
           />
         </div>
       </CardContent>
