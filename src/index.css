@@ -114,6 +114,19 @@
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-muted-foreground/30;
   }
+  
+  /* Ensure form action buttons are always visible */
+  @media (max-width: 640px) {
+    .form-actions {
+      position: sticky;
+      bottom: 0;
+      background: white;
+      padding: 0.75rem 0;
+      margin-top: 1rem;
+      border-top: 1px solid hsl(var(--border));
+      z-index: 10;
+    }
+  }
 }
 
 @layer components {
@@ -135,7 +148,7 @@
   }
 
   .data-table td {
-    @apply px-4 py-3 text-sm;
+    @apply px-4 py-3 text-sm align-middle;
   }
 
   /* Report table styles */

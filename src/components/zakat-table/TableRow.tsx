@@ -31,23 +31,23 @@ const ZakatTableRow: React.FC<ZakatTableRowProps> = ({
 
   return (
     <tr className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
-      <td className="text-center sticky left-0 z-10 bg-white">{index + 1}</td>
-      <td className="text-center">{record.penginput}</td>
-      <td className="text-center">{formatDate(record.tanggal)}</td>
-      <td>{record.nama}</td>
-      <td>{record.alamat}</td>
-      <td className="text-center">{record.zakatFitrah.jiwaBeras}</td>
-      <td className="text-center">{record.zakatFitrah.berasKg}</td>
-      <td className="text-center">{record.zakatFitrah.jiwaUang}</td>
-      <td className="text-right">{formatCurrency(record.zakatFitrah.uang)}</td>
-      <td className="text-right">{formatCurrency(record.zakatMaal)}</td>
-      <td className="text-center">{record.infaq.beras}</td>
-      <td className="text-right">{formatCurrency(record.infaq.uang)}</td>
-      <td className="text-center">{record.fidyah.beras}</td>
-      <td className="text-right">{formatCurrency(record.fidyah.uang)}</td>
-      <td className="text-center">{record.totalBeras}</td>
-      <td className="text-right">{formatCurrency(record.totalUang)}</td>
-      <td className="sticky right-0 z-10 bg-white">
+      <td className="text-center align-middle sticky left-0 z-10 bg-white border border-border">{index + 1}</td>
+      <td className="text-center align-middle border border-border">{record.penginput}</td>
+      <td className="text-center align-middle border border-border">{formatDate(record.tanggal)}</td>
+      <td className="align-middle border border-border">{record.nama}</td>
+      <td className="align-middle border border-border">{record.alamat}</td>
+      <td className="text-center align-middle border border-border">{record.zakatFitrah.jiwaBeras}</td>
+      <td className="text-center align-middle border border-border">{record.zakatFitrah.berasKg}</td>
+      <td className="text-center align-middle border border-border">{record.zakatFitrah.jiwaUang}</td>
+      <td className="text-right align-middle border border-border">{formatCurrency(record.zakatFitrah.uang)}</td>
+      <td className="text-right align-middle border border-border">{formatCurrency(record.zakatMaal)}</td>
+      <td className="text-center align-middle border border-border">{record.infaq.beras}</td>
+      <td className="text-right align-middle border border-border">{formatCurrency(record.infaq.uang)}</td>
+      <td className="text-center align-middle border border-border">{record.fidyah.beras}</td>
+      <td className="text-right align-middle border border-border">{formatCurrency(record.fidyah.uang)}</td>
+      <td className="text-center align-middle border border-border">{record.totalBeras}</td>
+      <td className="text-right align-middle border border-border">{formatCurrency(record.totalUang)}</td>
+      <td className="text-center align-middle bg-white border border-border">
         <TableActions recordId={record.id} onDelete={onDeleteClick} />
       </td>
     </tr>

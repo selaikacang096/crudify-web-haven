@@ -1,18 +1,19 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZakatFormData, ZakatRecord, ZAKAT_FITRAH_RATE_PER_JIWA } from "@/types/ZakatTypes";
 import { createRecord, updateRecord } from "@/services/zakatService";
 import { format } from "date-fns";
 import { toast } from "sonner";
-import { useEffect } from "react";
 
-interface UseZakatFormProps {
-  initialData?: ZakatRecord;
+// Define a default beras per jiwa value (2.5kg per person is standard)
+const BERAS_PER_JIWA = 2.5;
+const MAX_JIWA = 100;
+
+export const useZakatForm = ({ initialData, isEdit = false }: { 
+  initialData?: ZakatRecord; 
   isEdit?: boolean;
-}
-
-export const useZakatForm = ({ initialData, isEdit = false }: UseZakatFormProps) => {
+}) => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -79,6 +80,20 @@ export const useZakatForm = ({ initialData, isEdit = false }: UseZakatFormProps)
     }
   }, [formData.zakatFitrah.jiwaUang]);
   
+  // Effect to calculate beras kg based on jiwa beras count
+  useEffect(() => {
+    if (formData.zakatFitrah.jiwaBeras > 0) {
+      const calculatedBerasKg = formData.zakatFitrah.jiwaBeras * BERAS_PER_JIWA;
+      setFormData(prev => ({
+        ...prev,
+        zakatFitrah: {
+          ...prev.zakatFitrah,
+          berasKg: calculatedBerasKg
+        }
+      }));
+    }
+  }, [formData.zakatFitrah.jiwaBeras]);
+  
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -88,6 +103,12 @@ export const useZakatForm = ({ initialData, isEdit = false }: UseZakatFormProps)
       const [parent, child] = name.split(".");
       
       if (parent === "zakatFitrah") {
+        // Apply max validation for jiwa fields
+        if ((child === "jiwaBeras" || child === "jiwaUang") && Number(value) > MAX_JIWA) {
+          toast.warning(`Maximum value for ${child === "jiwaBeras" ? "Jiwa Beras" : "Jiwa Uang"} is ${MAX_JIWA}`);
+          return;
+        }
+        
         setFormData(prev => ({
           ...prev,
           zakatFitrah: {

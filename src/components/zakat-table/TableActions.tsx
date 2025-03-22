@@ -17,7 +17,7 @@ const TableActions: React.FC<TableActionsProps> = ({ recordId, onDelete }) => {
       <Button 
         variant="ghost" 
         size="icon" 
-        onClick={() => navigate(`/view/${recordId}`)}
+        onClick={() => navigate(`/record/${recordId}`)}
         className="size-8 text-muted-foreground hover:text-primary hover:bg-primary/10"
       >
         <Eye size={16} />

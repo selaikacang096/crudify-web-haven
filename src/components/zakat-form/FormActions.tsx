@@ -11,7 +11,7 @@ interface FormActionsProps {
 
 const FormActions: React.FC<FormActionsProps> = ({ isEdit, isSubmitting, onReset }) => {
   return (
-    <div className="flex justify-end space-x-4">
+    <div className="flex justify-end space-x-4 form-actions">
       <Button
         type="button"
         variant="outline"

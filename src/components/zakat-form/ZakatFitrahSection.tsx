@@ -15,6 +15,15 @@ interface ZakatFitrahSectionProps {
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+// Format currency for display
+const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(amount);
+};
+
 const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
   zakatFitrah,
   onInputChange
@@ -28,19 +37,20 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="zakatFitrah.jiwaBeras">Jiwa Beras</Label>
+            <Label htmlFor="zakatFitrah.jiwaBeras">Jiwa Beras (max 100)</Label>
             <Input
               id="zakatFitrah.jiwaBeras"
               name="zakatFitrah.jiwaBeras"
               type="number"
               min="0"
+              max="100"
               value={zakatFitrah.jiwaBeras}
               onChange={onInputChange}
               placeholder="0"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="zakatFitrah.berasKg">Beras (kg)</Label>
+            <Label htmlFor="zakatFitrah.berasKg">Beras (kg) - Auto-calculated: 2.5kg/jiwa</Label>
             <Input
               id="zakatFitrah.berasKg"
               name="zakatFitrah.berasKg"
@@ -53,19 +63,22 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="zakatFitrah.jiwaUang">Jiwa Uang</Label>
+            <Label htmlFor="zakatFitrah.jiwaUang">Jiwa Uang (max 100)</Label>
             <Input
               id="zakatFitrah.jiwaUang"
               name="zakatFitrah.jiwaUang"
               type="number"
               min="0"
+              max="100"
               value={zakatFitrah.jiwaUang}
               onChange={onInputChange}
               placeholder="0"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="zakatFitrah.uang">Uang (Auto-calculated: Rp. {ZAKAT_FITRAH_RATE_PER_JIWA.toLocaleString('id-ID')}/jiwa)</Label>
+            <Label htmlFor="zakatFitrah.uang">
+              Uang (Auto-calculated: {formatCurrency(ZAKAT_FITRAH_RATE_PER_JIWA)}/jiwa)
+            </Label>
             <Input
               id="zakatFitrah.uang"
               name="zakatFitrah.uang"

@@ -1,17 +1,15 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import ZakatForm from "@/components/ZakatForm";
-import { useZakatForm } from "@/hooks/useZakatForm";
-import { getRecordById, updateRecord } from "@/services/zakatService";
 import { useQuery } from "@tanstack/react-query";
+import { getRecordById } from "@/services/zakatService";
 import { toast } from "sonner";
 
 const EditRecord: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { formData, setFormData, resetForm } = useZakatForm();
   
   const { data: record, isLoading, error } = useQuery({
     queryKey: ['zakatRecord', id],
@@ -23,36 +21,6 @@ const EditRecord: React.FC = () => {
       }
     }
   });
-  
-  useEffect(() => {
-    if (record) {
-      setFormData({
-        penginput: record.penginput,
-        tanggal: record.tanggal,
-        nama: record.nama,
-        alamat: record.alamat,
-        zakatFitrah: { ...record.zakatFitrah },
-        zakatMaal: record.zakatMaal,
-        infaq: { ...record.infaq },
-        fidyah: { ...record.fidyah },
-      });
-    }
-  }, [record, setFormData]);
-  
-  const handleSubmit = async (data: typeof formData) => {
-    if (!id) return;
-    
-    try {
-      const updated = await updateRecord(id, data);
-      if (updated) {
-        toast.success("Record updated successfully");
-        navigate('/?tab=records', { replace: true });
-      }
-    } catch (error) {
-      console.error("Error updating record:", error);
-      toast.error("Failed to update record");
-    }
-  };
   
   if (isLoading) {
     return (
@@ -86,9 +54,7 @@ const EditRecord: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Edit Zakat Record</h1>
         <ZakatForm 
-          initialData={formData} 
-          onSubmit={handleSubmit} 
-          onReset={resetForm}
+          initialData={record} 
           isEdit={true}
         />
       </div>
