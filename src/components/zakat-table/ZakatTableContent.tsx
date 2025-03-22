@@ -17,10 +17,10 @@ const ZakatTableContent: React.FC<ZakatTableContentProps> = ({
       <table className="data-table w-max min-w-full border-collapse">
         <thead>
           <tr className="bg-secondary/80">
-            <th className="text-center align-middle left-0 z-10 bg-secondary/80 border border-border">No</th>
+            <th className="text-center align-middle sticky left-0 z-10 bg-secondary/80 border border-border">No</th>
             <th className="text-center align-middle border border-border">Penginput</th>
             <th className="text-center align-middle border border-border">Tanggal</th>
-            <th className="text-center align-middle sticky border border-border">Nama</th>
+            <th className="text-center align-middle border border-border">Nama</th>
             <th className="text-center align-middle border border-border">Alamat</th>
             <th colSpan={4} className="text-center border border-border">Zakat Fitrah</th>
             <th className="text-center align-middle border border-border">Zakat Maal</th>

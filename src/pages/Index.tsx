@@ -87,7 +87,7 @@ const Index: React.FC = () => {
           onValueChange={handleTabChange}
           className="space-y-4"
         >
-          <TabsList className="grid w-full sm:w-auto sm:inline-grid grid-cols-3 sm:grid-cols-3">
+          <TabsList className="grid w-full sm:w-auto sm:inline-grid grid-cols-2 sm:grid-cols-2">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <BarChart className="h-4 w-4" />
               <span>Dashboard</span>

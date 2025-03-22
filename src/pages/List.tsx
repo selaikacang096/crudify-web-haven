@@ -84,6 +84,19 @@ const List: React.FC = () => {
           )}
         </div>
         
+
+        {isLoading ? (
+          <div className="flex items-center justify-center h-40">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center p-6 text-destructive">
+            <p>Error loading data. Please try again.</p>
+          </div>
+        ) : (
+          <ZakatCardList records={sortedRecords} onDelete={confirmDelete} />
+        )}
+        
         <DeleteConfirmDialog 
           open={openDeleteDialog}
           onOpenChange={setOpenDeleteDialog}
