@@ -38,6 +38,17 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
+            <Label htmlFor="tanggal">Tanggal</Label>
+            <Input
+              id="tanggal"
+              name="tanggal"
+              type="date"
+              value={tanggal}
+              onChange={onInputChange}
+              required
+            />
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="penginput">Penginput</Label>
             <Select
               value={penginput}
@@ -55,17 +66,6 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="tanggal">Tanggal</Label>
-            <Input
-              id="tanggal"
-              name="tanggal"
-              type="date"
-              value={tanggal}
-              onChange={onInputChange}
-              required
-            />
           </div>
         </div>
         <div className="space-y-2">
