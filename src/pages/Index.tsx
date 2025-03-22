@@ -96,10 +96,6 @@ const Index: React.FC = () => {
               <Table className="h-4 w-4" />
               <span>Records</span>
             </TabsTrigger>
-            <TabsTrigger value="cards" className="flex items-center gap-2">
-              <LayoutList className="h-4 w-4" />
-              <span>Cards</span>
-            </TabsTrigger>
           </TabsList>
           
           {isLoading ? (

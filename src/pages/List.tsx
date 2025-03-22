@@ -84,55 +84,6 @@ const List: React.FC = () => {
           )}
         </div>
         
-        <Tabs 
-          defaultValue="cards"
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="space-y-4"
-        >
-          <TabsList className="grid w-full sm:w-auto sm:inline-grid grid-cols-3 sm:grid-cols-3">
-            <TabsTrigger value="cards" className="flex items-center gap-2">
-              <LayoutList className="h-4 w-4" />
-              <span>Cards</span>
-            </TabsTrigger>
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
-              <BarChart className="h-4 w-4" />
-              <span>Dashboard</span>
-            </TabsTrigger>
-            <TabsTrigger value="records" className="flex items-center gap-2">
-              <Table className="h-4 w-4" />
-              <span>Records</span>
-            </TabsTrigger>
-          </TabsList>
-          
-          {isLoading ? (
-            <div className="flex items-center justify-center h-40">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-            </div>
-          ) : error ? (
-            <div className="text-center p-6 text-destructive">
-              <p>Error loading data. Please try again.</p>
-            </div>
-          ) : (
-            <>
-              <TabsContent value="cards" className="space-y-4">
-                <ZakatCardList records={sortedRecords} onDelete={confirmDelete} />
-              </TabsContent>
-              
-              <TabsContent value="dashboard" className="space-y-4">
-                {/* Dashboard content would go here in future */}
-                <div className="text-center p-8 bg-muted/30 rounded-lg">
-                  <p className="text-muted-foreground">Dashboard view coming soon</p>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="records" className="space-y-4">
-                <ZakatTable data={sortedRecords} onDelete={() => refetch()} />
-              </TabsContent>
-            </>
-          )}
-        </Tabs>
-        
         <DeleteConfirmDialog 
           open={openDeleteDialog}
           onOpenChange={setOpenDeleteDialog}
