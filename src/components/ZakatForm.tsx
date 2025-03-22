@@ -65,15 +65,15 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
           
           {/* Zakat Maal, Infaq & Fidyah Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Zakat Maal */}
-            <ZakatMaalSection
-              zakatMaal={formData.zakatMaal}
-              onInputChange={handleInputChange}
-            />
-            
             {/* Infaq */}
             <InfaqSection
               infaq={formData.infaq}
+              onInputChange={handleInputChange}
+            />
+
+            {/* Zakat Maal */}
+            <ZakatMaalSection
+              zakatMaal={formData.zakatMaal}
               onInputChange={handleInputChange}
             />
             
