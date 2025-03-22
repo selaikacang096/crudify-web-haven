@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -37,15 +38,19 @@ const FidyahSection: React.FC<FidyahSectionProps> = ({
         </div>
         <div className="space-y-2">
           <Label htmlFor="fidyah.uang">Uang</Label>
-          <Input
-            id="fidyah.uang"
-            name="fidyah.uang"
-            type="number"
-            min="0"
-            value={fidyah.uang}
-            onChange={onInputChange}
-            placeholder="0"
-          />
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">Rp</span>
+            <Input
+              id="fidyah.uang"
+              name="fidyah.uang"
+              type="number"
+              min="0"
+              value={fidyah.uang}
+              onChange={onInputChange}
+              placeholder="0"
+              className="pl-9"
+            />
+          </div>
         </div>
       </CardContent>
     </Card>

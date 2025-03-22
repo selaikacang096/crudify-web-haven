@@ -79,16 +79,19 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
             <Label htmlFor="zakatFitrah.uang">
               Uang (Auto-calculated: {formatCurrency(ZAKAT_FITRAH_RATE_PER_JIWA)}/jiwa)
             </Label>
-            <Input
-              id="zakatFitrah.uang"
-              name="zakatFitrah.uang"
-              type="number"
-              min="0"
-              value={zakatFitrah.uang}
-              onChange={onInputChange}
-              placeholder="0"
-              className="bg-gray-100"
-            />
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">Rp</span>
+              <Input
+                id="zakatFitrah.uang"
+                name="zakatFitrah.uang"
+                type="number"
+                min="0"
+                value={zakatFitrah.uang}
+                onChange={onInputChange}
+                placeholder="0"
+                className="pl-9 bg-gray-100"
+              />
+            </div>
           </div>
         </div>
       </CardContent>

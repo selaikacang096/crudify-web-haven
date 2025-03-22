@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import AddRecord from "./pages/AddRecord";
 import EditRecord from "./pages/EditRecord";
 import ViewRecord from "./pages/ViewRecord";
+import List from "./pages/List";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 
@@ -42,6 +43,11 @@ const App = () => (
             <Route path="/view/:id" element={
               <ProtectedRoute>
                 <ViewRecord />
+              </ProtectedRoute>
+            } />
+            <Route path="/list" element={
+              <ProtectedRoute>
+                <List />
               </ProtectedRoute>
             } />
             <Route path="*" element={<NotFound />} />

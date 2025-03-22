@@ -22,15 +22,19 @@ const ZakatMaalSection: React.FC<ZakatMaalSectionProps> = ({
       <CardContent>
         <div className="space-y-2">
           <Label htmlFor="zakatMaal">Jumlah</Label>
-          <Input
-            id="zakatMaal"
-            name="zakatMaal"
-            type="number"
-            min="0"
-            value={zakatMaal}
-            onChange={onInputChange}
-            placeholder="0"
-          />
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">Rp</span>
+            <Input
+              id="zakatMaal"
+              name="zakatMaal"
+              type="number"
+              min="0"
+              value={zakatMaal}
+              onChange={onInputChange}
+              placeholder="0"
+              className="pl-9"
+            />
+          </div>
         </div>
       </CardContent>
     </Card>

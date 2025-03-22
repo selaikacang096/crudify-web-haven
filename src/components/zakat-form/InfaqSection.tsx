@@ -38,15 +38,19 @@ const InfaqSection: React.FC<InfaqSectionProps> = ({
         </div>
         <div className="space-y-2">
           <Label htmlFor="infaq.uang">Uang</Label>
-          <Input
-            id="infaq.uang"
-            name="infaq.uang"
-            type="number"
-            min="0"
-            value={infaq.uang}
-            onChange={onInputChange}
-            placeholder="0"
-          />
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">Rp</span>
+            <Input
+              id="infaq.uang"
+              name="infaq.uang"
+              type="number"
+              min="0"
+              value={infaq.uang}
+              onChange={onInputChange}
+              placeholder="0"
+              className="pl-9"
+            />
+          </div>
         </div>
       </CardContent>
     </Card>
