@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ZakatRecord } from "@/types/ZakatTypes";
 import { getAllRecords, initializeWithSampleData } from "@/services/zakatService";
-import { PlusCircle, BarChart, Table } from "lucide-react";
+import { PlusCircle, BarChart, Table, LayoutList } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -39,7 +39,7 @@ const Index: React.FC = () => {
     // Check for tab param in URL
     const searchParams = new URLSearchParams(location.search);
     const tabParam = searchParams.get('tab');
-    if (tabParam && (tabParam === 'dashboard' || tabParam === 'records')) {
+    if (tabParam && (tabParam === 'dashboard' || tabParam === 'records' || tabParam === 'cards')) {
       setActiveTab(tabParam);
     }
   }, [location.search]);
@@ -87,7 +87,7 @@ const Index: React.FC = () => {
           onValueChange={handleTabChange}
           className="space-y-4"
         >
-          <TabsList className="grid w-full sm:w-auto sm:inline-grid grid-cols-2 sm:grid-cols-2">
+          <TabsList className="grid w-full sm:w-auto sm:inline-grid grid-cols-3 sm:grid-cols-3">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <BarChart className="h-4 w-4" />
               <span>Dashboard</span>
@@ -95,6 +95,10 @@ const Index: React.FC = () => {
             <TabsTrigger value="records" className="flex items-center gap-2">
               <Table className="h-4 w-4" />
               <span>Records</span>
+            </TabsTrigger>
+            <TabsTrigger value="cards" className="flex items-center gap-2">
+              <LayoutList className="h-4 w-4" />
+              <span>Cards</span>
             </TabsTrigger>
           </TabsList>
           
@@ -121,6 +125,16 @@ const Index: React.FC = () => {
               
               <TabsContent value="records" className="space-y-4">
                 <ZakatTable data={records} onDelete={() => refetch()} />
+              </TabsContent>
+              
+              <TabsContent value="cards" className="space-y-4">
+                <Button 
+                  asChild
+                  variant="outline" 
+                  className="mb-4"
+                >
+                  <Link to="/list">View Full Card List</Link>
+                </Button>
               </TabsContent>
             </>
           )}

@@ -2,7 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2, Eye } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 
 interface TableActionsProps {
   recordId: string;
@@ -14,14 +14,6 @@ const TableActions: React.FC<TableActionsProps> = ({ recordId, onDelete }) => {
   
   return (
     <div className="flex justify-center space-x-2">
-      <Button 
-        variant="ghost" 
-        size="icon" 
-        onClick={() => navigate(`/record/${recordId}`)}
-        className="size-8 text-muted-foreground hover:text-primary hover:bg-primary/10"
-      >
-        <Eye size={16} />
-      </Button>
       <Button 
         variant="ghost" 
         size="icon" 

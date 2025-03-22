@@ -8,9 +8,10 @@ import TableActions from "../zakat-table/TableActions";
 
 interface ZakatCardProps {
   record: ZakatRecord;
+  onDelete: (id: string) => void;
 }
 
-const ZakatCard: React.FC<ZakatCardProps> = ({ record }) => {
+const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete }) => {
   // Format currency for display
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -29,7 +30,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record }) => {
     <Card className="apple-card h-full hover:shadow-md transition-shadow">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <div className="font-semibold">{record.nama}</div>
-        <TableActions recordId={record.id} onDelete={() => {}} />
+        <TableActions recordId={record.id} onDelete={onDelete} />
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex items-center text-sm">
