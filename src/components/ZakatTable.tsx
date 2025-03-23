@@ -21,7 +21,14 @@ const ZakatTable: React.FC<ZakatTableProps> = ({
   locationPath,
   searchQuery 
 }) => {
-  const location = useLocation();
+  // Get location safely - will be available when used within router context
+  let location;
+  try {
+    location = useLocation();
+  } catch (e) {
+    location = { pathname: locationPath || '', search: searchQuery || '' };
+  }
+  
   const currentLocation = locationPath || location.pathname;
   const currentSearch = searchQuery || location.search;
   
@@ -66,8 +73,8 @@ const ZakatTable: React.FC<ZakatTableProps> = ({
     const searchParams = new URLSearchParams(currentSearch);
     if (searchParams.get('scrollToBottom') === 'true' && tableEndRef.current) {
       tableEndRef.current.scrollIntoView({ behavior: 'smooth' });
-      // Clean up the URL
-      if (window.history && location.search) {
+      // Clean up the URL - only if we're in a browser context with history
+      if (window.history && typeof location !== 'string' && location.search) {
         const newParams = new URLSearchParams(location.search);
         newParams.delete('scrollToBottom');
         

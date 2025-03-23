@@ -123,7 +123,11 @@ const List: React.FC = () => {
                 <p>Error loading data. Please try again.</p>
               </div>
             ) : (
-              <ZakatTable data={sortedRecords} onDelete={() => refetch()} />
+              <ZakatTable 
+                data={sortedRecords} 
+                onDelete={() => refetch()} 
+                locationPath="/list"
+              />
             )}
           </TabsContent>
         </Tabs>
