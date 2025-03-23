@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import Layout from "@/components/Layout";
-import { getAllRecords, deleteRecord } from "@/services/zakatService";
+import { getAllRecords } from "@/services/zakatService";
 import ZakatCardList from "@/components/zakat-list/ZakatCardList";
 import { Button } from "@/components/ui/button";
-import { RotateCcw, BarChart, Table, LayoutList } from "lucide-react";
+import { RotateCcw, Table, LayoutList } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DeleteConfirmDialog from "@/components/zakat-table/DeleteConfirmDialog";
 import ZakatTable from "@/components/ZakatTable";
@@ -61,7 +61,7 @@ const List: React.FC = () => {
   };
   
   return (
-    <Layout>
+    <Layout forceActivePath="/list">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>

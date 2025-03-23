@@ -2,23 +2,39 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Home, Plus, List, LogOut, BarChart } from "lucide-react";
+import { Home, Plus, List, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 
 interface LayoutProps {
   children: React.ReactNode;
+  forceActivePath?: string; // Optional prop for testing/non-router contexts
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
+const Layout: React.FC<LayoutProps> = ({ children, forceActivePath }) => {
+  // Use React Router hooks safely
+  let location;
+  let navigate;
+  
+  try {
+    location = useLocation();
+    navigate = useNavigate();
+  } catch (e) {
+    // Fallback for usage outside router context (like tests)
+    location = { pathname: forceActivePath || '/' };
+    navigate = () => console.warn("Navigation not available in this context");
+  }
+  
   const { logout } = useAuth();
   const isActive = (path: string) => location.pathname === path;
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    try {
+      navigate("/login");
+    } catch (e) {
+      console.warn("Navigation failed, likely outside router context");
+    }
   };
 
   return (
