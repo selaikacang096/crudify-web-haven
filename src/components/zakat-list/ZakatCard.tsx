@@ -9,9 +9,10 @@ import TableActions from "../zakat-table/TableActions";
 interface ZakatCardProps {
   record: ZakatRecord;
   onDelete: (id: string) => void;
+  index: number; // Add index prop to display sequence number
 }
 
-const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete }) => {
+const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
   // Format currency for display
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -29,7 +30,12 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete }) => {
   return (
     <Card className="apple-card h-full hover:shadow-md transition-shadow">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <div className="font-semibold">{record.nama}</div>
+        <div className="font-semibold flex items-center">
+          <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-medium mr-2">
+            {index}
+          </span>
+          {record.nama}
+        </div>
         <TableActions recordId={record.id} onDelete={onDelete} />
       </CardHeader>
       <CardContent className="space-y-3">

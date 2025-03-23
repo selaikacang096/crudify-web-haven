@@ -19,8 +19,13 @@ const ZakatCardList: React.FC<ZakatCardListProps> = ({ records, onDelete }) => {
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {records.map((record) => (
-        <ZakatCard key={record.id} record={record} onDelete={onDelete} />
+      {records.map((record, idx) => (
+        <ZakatCard 
+          key={record.id} 
+          record={record} 
+          onDelete={onDelete} 
+          index={records.length - idx} // Display highest number first
+        />
       ))}
     </div>
   );
