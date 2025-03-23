@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import Layout from "@/components/Layout";
-import { getAllRecords } from "@/services/zakatService";
+import { getAllRecords, deleteRecord } from "@/services/zakatService";
 import ZakatCardList from "@/components/zakat-list/ZakatCardList";
 import { Button } from "@/components/ui/button";
 import { RotateCcw, Table, LayoutList } from "lucide-react";
