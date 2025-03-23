@@ -28,7 +28,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="container flex h-16 items-center">
           <div className="mr-4 flex">
             <Link to="/" className="flex items-center space-x-2">
-              <span className="text-lg font-medium">Zakat Management System</span>
+              <span className="text-lg font-medium">Zakat</span>
             </Link>
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
