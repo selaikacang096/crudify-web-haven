@@ -29,13 +29,8 @@ const List: React.FC = () => {
   });
 
   // Sort records to show newest on top
-  // const sortedRecords = [...records].sort((a, b) => 
-  //   new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime()
-  // );
-
   const sortedRecords = [...records].reverse(); // Membalik urutan dari hasil query
 
-  
   // Handle record deletion
   const handleDelete = async () => {
     if (recordToDelete) {
@@ -87,18 +82,51 @@ const List: React.FC = () => {
           )}
         </div>
         
+        <Tabs 
+          defaultValue="cards" 
+          value={activeTab} 
+          onValueChange={setActiveTab}
+          className="w-full"
+        >
+          <TabsList className="grid w-full sm:w-auto sm:inline-grid grid-cols-2 sm:grid-cols-2">
+            <TabsTrigger value="cards" className="flex items-center gap-2">
+              <LayoutList className="h-4 w-4" />
+              <span>Cards</span>
+            </TabsTrigger>
+            <TabsTrigger value="table" className="flex items-center gap-2">
+              <Table className="h-4 w-4" />
+              <span>Table</span>
+            </TabsTrigger>
+          </TabsList>
 
-        {isLoading ? (
-          <div className="flex items-center justify-center h-40">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-          </div>
-        ) : error ? (
-          <div className="text-center p-6 text-destructive">
-            <p>Error loading data. Please try again.</p>
-          </div>
-        ) : (
-          <ZakatCardList records={sortedRecords} onDelete={confirmDelete} />
-        )}
+          <TabsContent value="cards" className="pt-4">
+            {isLoading ? (
+              <div className="flex items-center justify-center h-40">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+              </div>
+            ) : error ? (
+              <div className="text-center p-6 text-destructive">
+                <p>Error loading data. Please try again.</p>
+              </div>
+            ) : (
+              <ZakatCardList records={sortedRecords} onDelete={confirmDelete} />
+            )}
+          </TabsContent>
+          
+          <TabsContent value="table" className="pt-4">
+            {isLoading ? (
+              <div className="flex items-center justify-center h-40">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+              </div>
+            ) : error ? (
+              <div className="text-center p-6 text-destructive">
+                <p>Error loading data. Please try again.</p>
+              </div>
+            ) : (
+              <ZakatTable data={sortedRecords} onDelete={() => refetch()} />
+            )}
+          </TabsContent>
+        </Tabs>
         
         <DeleteConfirmDialog 
           open={openDeleteDialog}

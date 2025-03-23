@@ -14,6 +14,7 @@ import List from "./pages/List";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 
+// Create a client
 const queryClient = new QueryClient();
 
 const App = () => (

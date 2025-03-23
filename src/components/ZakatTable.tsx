@@ -11,10 +11,20 @@ import DeleteConfirmDialog from "./zakat-table/DeleteConfirmDialog";
 interface ZakatTableProps {
   data: ZakatRecord[];
   onDelete?: () => void;
+  locationPath?: string;
+  searchQuery?: string;
 }
 
-const ZakatTable: React.FC<ZakatTableProps> = ({ data, onDelete }) => {
+const ZakatTable: React.FC<ZakatTableProps> = ({ 
+  data, 
+  onDelete,
+  locationPath,
+  searchQuery 
+}) => {
   const location = useLocation();
+  const currentLocation = locationPath || location.pathname;
+  const currentSearch = searchQuery || location.search;
+  
   const tableEndRef = useRef<HTMLDivElement>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
@@ -51,20 +61,24 @@ const ZakatTable: React.FC<ZakatTableProps> = ({ data, onDelete }) => {
 
   // Scroll to bottom if requested
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
+    if (!currentSearch) return;
+    
+    const searchParams = new URLSearchParams(currentSearch);
     if (searchParams.get('scrollToBottom') === 'true' && tableEndRef.current) {
       tableEndRef.current.scrollIntoView({ behavior: 'smooth' });
       // Clean up the URL
-      const newParams = new URLSearchParams(location.search);
-      newParams.delete('scrollToBottom');
-      
-      const newSearch = newParams.toString();
-      const newUrl = `${location.pathname}${newSearch ? `?${newSearch}` : ''}`;
-      
-      // Update URL without reloading
-      window.history.replaceState({}, '', newUrl);
+      if (window.history && location.search) {
+        const newParams = new URLSearchParams(location.search);
+        newParams.delete('scrollToBottom');
+        
+        const newSearch = newParams.toString();
+        const newUrl = `${currentLocation}${newSearch ? `?${newSearch}` : ''}`;
+        
+        // Update URL without reloading
+        window.history.replaceState({}, '', newUrl);
+      }
     }
-  }, [location]);
+  }, [currentSearch, currentLocation, location]);
   
   return (
     <>
