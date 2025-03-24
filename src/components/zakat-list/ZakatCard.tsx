@@ -3,7 +3,7 @@ import React from "react";
 import { format } from "date-fns";
 import { ZakatRecord } from "@/types/ZakatTypes";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { User, Calendar, MapPin, Coins, Package, FileDigit, FileBox } from "lucide-react";
+import { User, Calendar, MapPin, Coins, Package, BadgeDollarSign, Landmark, Heart, Sparkles } from "lucide-react";
 import TableActions from "../zakat-table/TableActions";
 
 interface ZakatCardProps {
@@ -26,6 +26,12 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'dd MMM yyyy');
   };
+
+  // Check if section should be displayed
+  const hasZakatFitrah = record.zakatFitrah.berasKg > 0 || record.zakatFitrah.uang > 0;
+  const hasZakatMaal = record.zakatMaal > 0;
+  const hasInfaq = record.infaq.beras > 0 || record.infaq.uang > 0;
+  const hasFidyah = record.fidyah.beras > 0 || record.fidyah.uang > 0;
 
   return (
     <Card className="apple-card h-full hover:shadow-md transition-shadow">
@@ -56,6 +62,83 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
           <span className="text-muted-foreground">Alamat:</span>
           <span className="ml-1 font-medium">{record.alamat}</span>
         </div>
+
+        {/* Show Zakat Fitrah details if there are values */}
+        {hasZakatFitrah && (
+          <div className="flex items-start text-sm border-t pt-2">
+            <BadgeDollarSign className="mr-2 h-4 w-4 text-emerald-500" />
+            <div>
+              <span className="font-medium text-emerald-600">Zakat Fitrah:</span>
+              <div className="flex flex-col gap-1 mt-1">
+                {record.zakatFitrah.berasKg > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    Beras: <span className="font-medium">{record.zakatFitrah.berasKg} kg</span>
+                    {record.zakatFitrah.jiwaBeras > 0 && ` (${record.zakatFitrah.jiwaBeras} jiwa)`}
+                  </span>
+                )}
+                {record.zakatFitrah.uang > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    Uang: <span className="font-medium">{formatCurrency(record.zakatFitrah.uang)}</span>
+                    {record.zakatFitrah.jiwaUang > 0 && ` (${record.zakatFitrah.jiwaUang} jiwa)`}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Show Zakat Maal if there is a value */}
+        {hasZakatMaal && (
+          <div className="flex items-center text-sm border-t pt-2">
+            <Landmark className="mr-2 h-4 w-4 text-blue-500" />
+            <span className="text-blue-600 font-medium">Zakat Maal:</span>
+            <span className="ml-1 font-medium">{formatCurrency(record.zakatMaal)}</span>
+          </div>
+        )}
+
+        {/* Show Infaq details if there are values */}
+        {hasInfaq && (
+          <div className="flex items-start text-sm border-t pt-2">
+            <Heart className="mr-2 h-4 w-4 text-purple-500" />
+            <div>
+              <span className="font-medium text-purple-600">Infaq:</span>
+              <div className="flex flex-col gap-1 mt-1">
+                {record.infaq.beras > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    Beras: <span className="font-medium">{record.infaq.beras} kg</span>
+                  </span>
+                )}
+                {record.infaq.uang > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    Uang: <span className="font-medium">{formatCurrency(record.infaq.uang)}</span>
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Show Fidyah details if there are values */}
+        {hasFidyah && (
+          <div className="flex items-start text-sm border-t pt-2">
+            <Sparkles className="mr-2 h-4 w-4 text-amber-500" />
+            <div>
+              <span className="font-medium text-amber-600">Fidyah:</span>
+              <div className="flex flex-col gap-1 mt-1">
+                {record.fidyah.beras > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    Beras: <span className="font-medium">{record.fidyah.beras} kg</span>
+                  </span>
+                )}
+                {record.fidyah.uang > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    Uang: <span className="font-medium">{formatCurrency(record.fidyah.uang)}</span>
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 gap-2 pt-2 border-t">
           <div className="flex items-center text-sm">
