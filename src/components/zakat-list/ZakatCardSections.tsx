@@ -66,7 +66,6 @@ const ZakatCardSections: React.FC<ZakatCardSectionsProps> = ({ record }) => {
             {record.infaq.beras > 0 && (
               <span className="text-xs text-muted-foreground">
                 <span className="font-medium ml-1 text-sm text-slate-900">{record.infaq.beras} kg</span>
-                {record.infaq.jiwaBeras > 0 && ` (${record.infaq.jiwaBeras} jiwa)`}
               </span>
             )}
           </div>
@@ -89,7 +88,6 @@ const ZakatCardSections: React.FC<ZakatCardSectionsProps> = ({ record }) => {
             {record.fidyah.beras > 0 && (
               <span className="text-xs text-muted-foreground">
                 <span className="font-medium ml-1 text-sm text-slate-900">{record.fidyah.beras} kg</span>
-                {record.fidyah.jiwaBeras > 0 && ` (${record.fidyah.jiwaBeras} jiwa)`}
               </span>
             )}
           </div>

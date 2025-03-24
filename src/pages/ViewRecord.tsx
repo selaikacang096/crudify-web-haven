@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { getRecordById } from "@/utils/zakatStorage";
+import { getRecordById, deleteRecord } from "@/services/zakatService";
 import { ZakatRecord } from "@/types/ZakatTypes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { deleteRecord } from "@/utils/zakatStorage";
+import { formatCurrency } from "@/utils/formatters";
 
 const ViewRecord: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,26 +29,27 @@ const ViewRecord: React.FC = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   
   useEffect(() => {
-    if (id) {
-      const recordData = getRecordById(id);
-      if (recordData) {
-        setRecord(recordData);
-      } else {
-        toast.error("Record not found");
-        navigate("/");
+    const fetchRecord = async () => {
+      if (id) {
+        try {
+          const recordData = await getRecordById(id);
+          if (recordData) {
+            setRecord(recordData);
+          } else {
+            toast.error("Record not found");
+            navigate("/");
+          }
+        } catch (error) {
+          console.error("Error fetching record:", error);
+          toast.error("Failed to load record");
+          navigate("/");
+        }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+    
+    fetchRecord();
   }, [id, navigate]);
-  
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(amount);
-  };
   
   // Format date
   const formatDate = (dateString: string) => {
@@ -55,13 +57,18 @@ const ViewRecord: React.FC = () => {
   };
   
   // Handle record deletion
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (id) {
-      const deleted = deleteRecord(id);
-      if (deleted) {
-        toast.success("Record deleted successfully");
-        navigate("/");
-      } else {
+      try {
+        const deleted = await deleteRecord(id);
+        if (deleted) {
+          toast.success("Record deleted successfully");
+          navigate("/");
+        } else {
+          toast.error("Failed to delete record");
+        }
+      } catch (error) {
+        console.error("Error deleting record:", error);
         toast.error("Failed to delete record");
       }
       setOpenDeleteDialog(false);
