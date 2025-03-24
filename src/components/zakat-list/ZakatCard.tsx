@@ -3,7 +3,7 @@ import React from "react";
 import { format } from "date-fns";
 import { ZakatRecord } from "@/types/ZakatTypes";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { User, Calendar, MapPin, Coins, Package, BadgeDollarSign, Landmark, Heart, Sparkles } from "lucide-react";
+import { User, Calendar, MapPin, Coins, Package, Receipt, Banknote, HandCoins, Scale } from "lucide-react";
 import TableActions from "../zakat-table/TableActions";
 
 interface ZakatCardProps {
@@ -66,7 +66,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
         {/* Show Zakat Fitrah details if there are values */}
         {hasZakatFitrah && (
           <div className="flex items-start text-sm border-t pt-2">
-            <BadgeDollarSign className="mr-2 h-4 w-4 text-emerald-500" />
+            <Receipt className="mr-2 h-4 w-4 text-emerald-500" />
             <div>
               <span className="font-medium text-emerald-600">Zakat Fitrah:</span>
               <div className="flex flex-col gap-1 mt-1">
@@ -90,7 +90,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
         {/* Show Zakat Maal if there is a value */}
         {hasZakatMaal && (
           <div className="flex items-center text-sm border-t pt-2">
-            <Landmark className="mr-2 h-4 w-4 text-blue-500" />
+            <Banknote className="mr-2 h-4 w-4 text-blue-500" />
             <span className="text-blue-600 font-medium">Zakat Maal:</span>
             <span className="ml-1 font-medium">{formatCurrency(record.zakatMaal)}</span>
           </div>
@@ -99,7 +99,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
         {/* Show Infaq details if there are values */}
         {hasInfaq && (
           <div className="flex items-start text-sm border-t pt-2">
-            <Heart className="mr-2 h-4 w-4 text-purple-500" />
+            <HandCoins className="mr-2 h-4 w-4 text-purple-500" />
             <div>
               <span className="font-medium text-purple-600">Infaq:</span>
               <div className="flex flex-col gap-1 mt-1">
@@ -121,7 +121,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
         {/* Show Fidyah details if there are values */}
         {hasFidyah && (
           <div className="flex items-start text-sm border-t pt-2">
-            <Sparkles className="mr-2 h-4 w-4 text-amber-500" />
+            <Scale className="mr-2 h-4 w-4 text-amber-500" />
             <div>
               <span className="font-medium text-amber-600">Fidyah:</span>
               <div className="flex flex-col gap-1 mt-1">
