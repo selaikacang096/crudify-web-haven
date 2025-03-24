@@ -35,7 +35,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     prepareChartData(totals), [totals]);
   
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-4 md:space-y-6 animate-fade-in">
       <DashboardSummaryCards 
         totalRecords={totals.totalRecords} 
         totalBeras={totals.totalBeras} 
@@ -50,11 +50,13 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         formatCurrency={formatCurrency}
       />
       
-      <ZakatReportTable 
-        reportData={reportData}
-        reportSummary={reportSummary}
-        formatCurrency={formatCurrency}
-      />
+      <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+        <ZakatReportTable 
+          reportData={reportData}
+          reportSummary={reportSummary}
+          formatCurrency={formatCurrency}
+        />
+      </div>
       
       <ZakatCharts 
         berasChartData={berasChartData}

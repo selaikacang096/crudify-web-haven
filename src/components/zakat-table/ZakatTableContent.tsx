@@ -2,6 +2,7 @@
 import React from "react";
 import { ZakatRecord } from "@/types/ZakatTypes";
 import ZakatTableRow from "./TableRow";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ZakatTableContentProps {
   data: ZakatRecord[];
@@ -12,6 +13,17 @@ const ZakatTableContent: React.FC<ZakatTableContentProps> = ({
   data, 
   onDeleteClick 
 }) => {
+  const isMobile = useIsMobile();
+  
+  if (isMobile) {
+    return (
+      <div className="p-4 text-center text-sm text-muted-foreground">
+        <p className="mb-2">Table view is optimized for larger screens.</p>
+        <p>Please use card view on mobile devices for better experience.</p>
+      </div>
+    );
+  }
+  
   return (
     <div className="table-container rounded-lg border border-border/60 shadow-protocol overflow-x-auto animate-fade-in">
       <table className="data-table w-max min-w-full border-collapse">

@@ -10,14 +10,14 @@ interface ZakatCardSummaryProps {
 
 const ZakatCardSummary: React.FC<ZakatCardSummaryProps> = ({ totalBeras, totalUang }) => {
   return (
-    <div className="grid grid-cols-2 gap-3 pt-2 border-t border-border">
-      <div className="flex items-center text-sm bg-secondary/50 p-2 rounded">
-        <Package className="mr-2 h-4 w-4 text-primary/80" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 pt-2 border-t border-border">
+      <div className="flex items-center text-xs sm:text-sm bg-secondary/50 p-2 rounded">
+        <Package className="mr-1.5 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
         <span className="font-medium">{totalBeras} kg</span>
       </div>
-      <div className="flex items-center text-sm bg-secondary/50 p-2 rounded">
-        <Coins className="mr-2 h-4 w-4 text-primary/80" />
-        <span className="font-medium">{formatCurrency(totalUang)}</span>
+      <div className="flex items-center text-xs sm:text-sm bg-secondary/50 p-2 rounded">
+        <Coins className="mr-1.5 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
+        <span className="font-medium truncate">{formatCurrency(totalUang)}</span>
       </div>
     </div>
   );

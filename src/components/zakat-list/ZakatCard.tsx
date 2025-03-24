@@ -26,18 +26,18 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
         index={index}
         onDelete={onDelete}
       />
-      <CardContent className="space-y-4 pt-4 flex-grow">
+      <CardContent className="space-y-3 pt-3 md:space-y-4 md:pt-4 flex-grow text-sm">
         <ZakatCardDetails
           penginput={record.penginput}
           tanggal={record.tanggal}
           alamat={record.alamat}
         />
         
-        <div className="my-3 border-t border-border/50"></div>
+        <div className="my-2 md:my-3 border-t border-border/50"></div>
         
         <ZakatCardSections record={record} />
         
-        <div className="mt-auto pt-3">
+        <div className="mt-auto pt-2 md:pt-3">
           <ZakatCardSummary
             totalBeras={record.totalBeras}
             totalUang={record.totalUang}

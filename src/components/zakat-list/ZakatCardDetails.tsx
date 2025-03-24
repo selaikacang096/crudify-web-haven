@@ -15,24 +15,24 @@ const ZakatCardDetails: React.FC<ZakatCardDetailsProps> = ({
   alamat
 }) => {
   return (
-    <div className="space-y-3">
-      <div className="flex items-center text-sm">
-        <User className="mr-2 h-4 w-4 text-primary" />
+    <div className="space-y-2 md:space-y-3">
+      <div className="flex items-center text-xs sm:text-sm">
+        <User className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
         <span className="text-muted-foreground">Diinput oleh:</span>
-        <span className="ml-1.5 font-medium">{penginput}</span>
+        <span className="ml-1 sm:ml-1.5 font-medium truncate">{penginput}</span>
       </div>
       
-      <div className="flex items-center text-sm">
-        <Calendar className="mr-2 h-4 w-4 text-primary" />
+      <div className="flex items-center text-xs sm:text-sm">
+        <Calendar className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0" />
         <span className="text-muted-foreground">Tanggal:</span>
-        <span className="ml-1.5 font-medium">{formatDate(tanggal)}</span>
+        <span className="ml-1 sm:ml-1.5 font-medium">{formatDate(tanggal)}</span>
       </div>
       
-      <div className="flex items-start text-sm">
-        <MapPin className="mr-2 h-4 w-4 shrink-0 mt-0.5 text-primary" />
-        <div>
+      <div className="flex items-start text-xs sm:text-sm">
+        <MapPin className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 mt-0.5 text-primary" />
+        <div className="overflow-hidden">
           <span className="text-muted-foreground">Alamat:</span>
-          <span className="ml-1.5 font-medium">{alamat.normalize("NFKC")}</span>
+          <span className="ml-1 sm:ml-1.5 font-medium break-words line-clamp-2">{alamat.normalize("NFKC")}</span>
         </div>
       </div>
     </div>

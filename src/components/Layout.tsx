@@ -41,14 +41,14 @@ const Layout: React.FC<LayoutProps> = ({ children, forceActivePath }) => {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center">
+        <div className="container px-4 sm:px-6 flex h-14 md:h-16 items-center">
           <div className="mr-4 flex">
             <Link to="/" className="flex items-center space-x-2">
-              <span className="text-lg font-semibold text-primary">ZakatApp</span>
+              <span className="text-base md:text-lg font-semibold text-primary">ZakatApp</span>
             </Link>
           </div>
-          <div className="flex flex-1 items-center justify-end space-x-2">
-            <nav className="flex items-center space-x-6">
+          <div className="flex flex-1 items-center justify-end">
+            <nav className="hidden md:flex items-center space-x-6">
               <Link 
                 to="/" 
                 className={cn(
@@ -86,15 +86,25 @@ const Layout: React.FC<LayoutProps> = ({ children, forceActivePath }) => {
                 className="ml-2 flex items-center gap-1.5 text-muted-foreground hover:text-destructive"
               >
                 <LogOut size={16} />
-                <span className="hidden md:inline">Logout</span>
+                <span>Logout</span>
               </Button>
             </nav>
+            
+            {/* Mobile logout button */}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleLogout}
+              className="md:hidden text-muted-foreground"
+            >
+              <LogOut size={20} />
+            </Button>
           </div>
         </div>
       </header>
       
       {/* Main content */}
-      <main className="flex-1 container py-8 md:py-12 px-4 md:px-6 mb-20 md:mb-0">
+      <main className="flex-1 container py-4 md:py-8 lg:py-12 px-4 md:px-6 mb-16 md:mb-0">
         {children}
       </main>
       
@@ -104,7 +114,7 @@ const Layout: React.FC<LayoutProps> = ({ children, forceActivePath }) => {
           <Link 
             to="/" 
             className={cn(
-              "flex flex-col items-center p-3 transition-colors",
+              "flex flex-col items-center p-2.5 transition-colors",
               isActive("/") ? "text-primary" : "text-muted-foreground"
             )}
           >
@@ -114,7 +124,7 @@ const Layout: React.FC<LayoutProps> = ({ children, forceActivePath }) => {
           <Link 
             to="/list" 
             className={cn(
-              "flex flex-col items-center p-3 transition-colors",
+              "flex flex-col items-center p-2.5 transition-colors",
               isActive("/list") ? "text-primary" : "text-muted-foreground"
             )}
           >
@@ -124,7 +134,7 @@ const Layout: React.FC<LayoutProps> = ({ children, forceActivePath }) => {
           <Link 
             to="/add" 
             className={cn(
-              "flex flex-col items-center p-3 transition-colors",
+              "flex flex-col items-center p-2.5 transition-colors",
               isActive("/add") ? "text-primary" : "text-muted-foreground"
             )}
           >
