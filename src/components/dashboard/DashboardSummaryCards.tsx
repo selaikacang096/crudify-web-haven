@@ -1,8 +1,6 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Coins, Wheat, DollarSign, HandCoins, Heart, BadgeDollarSign } from "lucide-react";
-
 interface DashboardSummaryCardsProps {
   totalRecords: number;
   totalBeras: number;
@@ -16,7 +14,6 @@ interface DashboardSummaryCardsProps {
   fidyahUang: number;
   formatCurrency: (amount: number) => string;
 }
-
 const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
   totalRecords,
   totalBeras,
@@ -30,11 +27,10 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
   fidyahUang,
   formatCurrency
 }) => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  return <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <Card className="apple-card">
         <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-muted-foreground text-sm font-normal">Total Muzakki</CardTitle>
+          <CardTitle className="text-muted-foreground text-sm font-medium">Total Muzakki</CardTitle>
           <Users className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -43,7 +39,7 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
       </Card>
       <Card className="apple-card">
         <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-muted-foreground text-sm font-normal">Total Beras</CardTitle>
+          <CardTitle className="text-muted-foreground text-sm font-medium">Total Beras</CardTitle>
           <Wheat className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -53,101 +49,51 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
               <span>Zakat Fitrah:</span>
               <span>{zakatFitrahBeras} kg</span>
             </div>
-            {infaqBeras > 0 && (
-              <div className="flex justify-between">
+            {infaqBeras > 0 && <div className="flex justify-between">
                 <span>Infaq:</span>
                 <span>{infaqBeras} kg</span>
-              </div>
-            )}
-            {fidyahBeras > 0 && (
-              <div className="flex justify-between">
+              </div>}
+            {fidyahBeras > 0 && <div className="flex justify-between">
                 <span>Fidyah:</span>
                 <span>{fidyahBeras} kg</span>
-              </div>
-            )}
+              </div>}
           </div>
         </CardContent>
       </Card>
       <Card className="apple-card">
         <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-muted-foreground text-sm font-normal">Total Uang</CardTitle>
+          <CardTitle className="text-muted-foreground text-sm font-medium">Total Uang</CardTitle>
           <DollarSign className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">{formatCurrency(totalUang)}</div>
           <div className="pt-2 grid grid-cols-1 gap-1 text-xs text-muted-foreground">
-            {zakatFitrahUang > 0 && (
-              <div className="flex justify-between">
+            {zakatFitrahUang > 0 && <div className="flex justify-between">
                 <span>Zakat Fitrah:</span>
                 <span>{formatCurrency(zakatFitrahUang)}</span>
-              </div>
-            )}
-            {zakatMaal > 0 && (
-              <div className="flex justify-between">
+              </div>}
+            {zakatMaal > 0 && <div className="flex justify-between">
                 <span>Zakat Maal:</span>
                 <span>{formatCurrency(zakatMaal)}</span>
-              </div>
-            )}
-            {infaqUang > 0 && (
-              <div className="flex justify-between">
+              </div>}
+            {infaqUang > 0 && <div className="flex justify-between">
                 <span>Infaq:</span>
                 <span>{formatCurrency(infaqUang)}</span>
-              </div>
-            )}
-            {fidyahUang > 0 && (
-              <div className="flex justify-between">
+              </div>}
+            {fidyahUang > 0 && <div className="flex justify-between">
                 <span>Fidyah:</span>
                 <span>{formatCurrency(fidyahUang)}</span>
-              </div>
-            )}
+              </div>}
           </div>
         </CardContent>
       </Card>
       
       {/* Category breakdown cards */}
-      <Card className="apple-card">
-        <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-muted-foreground text-sm font-normal">Zakat Fitrah</CardTitle>
-          <BadgeDollarSign className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-semibold">{formatCurrency(zakatFitrahUang)}</div>
-          <div className="text-lg font-medium">{zakatFitrahBeras} kg</div>
-        </CardContent>
-      </Card>
       
-      <Card className="apple-card">
-        <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-muted-foreground text-sm font-normal">Zakat Maal</CardTitle>
-          <Coins className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-semibold">{formatCurrency(zakatMaal)}</div>
-        </CardContent>
-      </Card>
       
-      <Card className="apple-card">
-        <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-muted-foreground text-sm font-normal">Infaq & Fidyah</CardTitle>
-          <Heart className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <div className="text-sm text-muted-foreground">Infaq</div>
-              <div className="font-medium">{formatCurrency(infaqUang)}</div>
-              <div className="font-medium">{infaqBeras} kg</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Fidyah</div>
-              <div className="font-medium">{formatCurrency(fidyahUang)}</div>
-              <div className="font-medium">{fidyahBeras} kg</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+      
+      
+      
+    </div>;
 };
-
 export default DashboardSummaryCards;
