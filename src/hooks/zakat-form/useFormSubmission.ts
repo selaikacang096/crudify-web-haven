@@ -23,7 +23,7 @@ export const useFormSubmission = (
         const updated = await updateRecord(initialData.id, formData);
         if (updated) {
           toast.success("Record updated successfully");
-          navigate("/");
+          navigate("/list");
         } else {
           toast.error("Failed to update record");
         }
