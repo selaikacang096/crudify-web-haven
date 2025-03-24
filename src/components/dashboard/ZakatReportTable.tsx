@@ -1,36 +1,25 @@
-
 import React, { useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, FileDown, FileText } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableFooter
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
 import { ReportData, ReportSummary } from "@/types/ZakatTypes";
 import { format, parse, isValid } from "date-fns";
 import { toast } from "sonner";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-
 interface ZakatReportTableProps {
   reportData: ReportData[];
   reportSummary: ReportSummary;
   formatCurrency: (amount: number) => string;
 }
-
 const ZakatReportTable: React.FC<ZakatReportTableProps> = ({
   reportData,
   reportSummary,
   formatCurrency
 }) => {
   const reportTableRef = useRef<HTMLDivElement>(null);
-  
+
   // Format date for display
   const formatDisplayDate = (dateStr: string) => {
     try {
@@ -50,40 +39,41 @@ const ZakatReportTable: React.FC<ZakatReportTableProps> = ({
       toast.error("Could not generate PDF");
       return;
     }
-
     try {
-      toast.info("Generating PDF...", { duration: 2000 });
-      
+      toast.info("Generating PDF...", {
+        duration: 2000
+      });
       const element = reportTableRef.current;
       const canvas = await html2canvas(element, {
         scale: 2,
         logging: false,
-        useCORS: true,
+        useCORS: true
       });
-      
       const imgData = canvas.toDataURL('image/png');
-      
+
       // Calculate PDF dimensions based on the table
       const imgWidth = 210; // A4 width in mm
       const pageHeight = 295; // A4 height in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
+      const imgHeight = canvas.height * imgWidth / canvas.width;
       const pdf = new jsPDF('p', 'mm', 'a4');
-      
+
       // Add title
       pdf.setFontSize(14);
-      pdf.text('LAPORAN PENERIMAAN ZISF', imgWidth / 2, 10, { align: 'center' });
-      pdf.text('UPZ DKM', imgWidth / 2, 18, { align: 'center' });
-      
+      pdf.text('LAPORAN PENERIMAAN ZISF', imgWidth / 2, 10, {
+        align: 'center'
+      });
+      pdf.text('UPZ DKM', imgWidth / 2, 18, {
+        align: 'center'
+      });
       let position = 25;
-      
+
       // Determine if we need multiple pages
       let heightLeft = imgHeight;
-      
+
       // Add first page
       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= (pageHeight - position);
-      
+      heightLeft -= pageHeight - position;
+
       // Add additional pages if needed
       while (heightLeft > 0) {
         position = 0;
@@ -91,10 +81,9 @@ const ZakatReportTable: React.FC<ZakatReportTableProps> = ({
         pdf.addImage(imgData, 'PNG', 0, position - (pageHeight - 25), imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
-      
+
       // Save PDF
       pdf.save(`LAPORAN_PENERIMAAN_ZISF_${format(new Date(), 'yyyyMMdd')}.pdf`);
-      
       toast.success("PDF exported successfully");
     } catch (error) {
       console.error("Error exporting to PDF:", error);
@@ -107,18 +96,18 @@ const ZakatReportTable: React.FC<ZakatReportTableProps> = ({
     try {
       // Create a CSV string
       let csvContent = "data:text/csv;charset=utf-8,";
-      
+
       // Add table headers
       csvContent += "NO,TANGGAL,ZAKAT FITRAH - JIWA,ZAKAT FITRAH - BERAS,ZAKAT FITRAH - JIWA,ZAKAT FITRAH - UANG,ZAKAT MAAL,INFAQ/SHODAQOH - BERAS,INFAQ/SHODAQOH - UANG,FIDYAH - BERAS,FIDYAH - UANG,TOTAL BERAS (Kg),TOTAL UANG\n";
-      
+
       // Add table data
       reportData.forEach((report, index) => {
         csvContent += `${index + 1},${formatDisplayDate(report.date)},${report.zakatFitrahJiwaBeras},${report.zakatFitrahBerasKg} Kg,${report.zakatFitrahJiwaUang},${formatCurrency(report.zakatFitrahUang)},${formatCurrency(report.zakatMaal)},${report.infaqBeras} Kg,${formatCurrency(report.infaqUang)},${report.fidyahBeras} Kg,${formatCurrency(report.fidyahUang)},${report.totalBeras} Kg,${formatCurrency(report.totalUang)}\n`;
       });
-      
+
       // Add summary row
       csvContent += `TOTAL,,${reportSummary.totalJiwaBeras},${reportSummary.totalBerasKg} Kg,${reportSummary.totalJiwaUang},${formatCurrency(reportSummary.totalZakatFitrahUang)},${formatCurrency(reportSummary.totalZakatMaal)},${reportSummary.totalInfaqBeras} Kg,${formatCurrency(reportSummary.totalInfaqUang)},${reportSummary.totalFidyahBeras} Kg,${formatCurrency(reportSummary.totalFidyahUang)},${reportSummary.totalAllBeras} Kg,${formatCurrency(reportSummary.totalAllUang)}\n`;
-      
+
       // Create a download link and trigger download
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
@@ -127,34 +116,21 @@ const ZakatReportTable: React.FC<ZakatReportTableProps> = ({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
       toast.success("Report exported successfully");
     } catch (error) {
       console.error("Error exporting to Excel:", error);
       toast.error("Failed to export report");
     }
   };
-
-  return (
-    <Card className="apple-card">
+  return <Card className="apple-card">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>LAPORAN PENERIMAAN ZISF</CardTitle>
-        <div className="flex gap-2">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex items-center gap-1"
-            onClick={exportToExcel}
-          >
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={exportToExcel}>
             <FileDown size={16} />
             Export CSV
           </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex items-center gap-1"
-            onClick={exportToPDF}
-          >
+          <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={exportToPDF}>
             <FileText size={16} />
             Export PDF
           </Button>
@@ -187,15 +163,11 @@ const ZakatReportTable: React.FC<ZakatReportTableProps> = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {reportData.length === 0 ? (
-                  <TableRow>
+                {reportData.length === 0 ? <TableRow>
                     <TableCell colSpan={13} className="text-center text-muted-foreground py-6">
                       No records found
                     </TableCell>
-                  </TableRow>
-                ) : (
-                  reportData.map((report, index) => (
-                    <TableRow key={`report-${index}`}>
+                  </TableRow> : reportData.map((report, index) => <TableRow key={`report-${index}`}>
                       <TableCell className="text-center border">{index + 1}</TableCell>
                       <TableCell className="text-center border">{formatDisplayDate(report.date)}</TableCell>
                       <TableCell className="text-center border">{report.zakatFitrahJiwaBeras}</TableCell>
@@ -209,9 +181,7 @@ const ZakatReportTable: React.FC<ZakatReportTableProps> = ({
                       <TableCell className="text-center border">{formatCurrency(report.fidyahUang)}</TableCell>
                       <TableCell className="text-center border">{report.totalBeras} Kg</TableCell>
                       <TableCell className="text-center border">{formatCurrency(report.totalUang)}</TableCell>
-                    </TableRow>
-                  ))
-                )}
+                    </TableRow>)}
               </TableBody>
               <TableFooter>
                 <TableRow className="bg-muted/30 font-semibold">
@@ -233,8 +203,6 @@ const ZakatReportTable: React.FC<ZakatReportTableProps> = ({
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default ZakatReportTable;
