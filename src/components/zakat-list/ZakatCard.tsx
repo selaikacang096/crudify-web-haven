@@ -3,7 +3,7 @@ import React from "react";
 import { format } from "date-fns";
 import { ZakatRecord } from "@/types/ZakatTypes";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { User, Calendar, MapPin, Coins, Package, Receipt, Banknote, HandCoins, Scale } from "lucide-react";
+import { User, Calendar, MapPin, Coins, Package, Receipt, Banknote, HandCoins, HandPlatter } from "lucide-react";
 import TableActions from "../zakat-table/TableActions";
 
 interface ZakatCardProps {
@@ -121,7 +121,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
         {/* Show Fidyah details if there are values */}
         {hasFidyah && (
           <div className="flex items-start text-sm border-t pt-2">
-            <Scale className="mr-2 h-4 w-4 text-amber-500" />
+            <HandPlatter className="mr-2 h-4 w-4 text-amber-500" />
             <div>
               <span className="font-medium text-amber-600">Fidyah:</span>
               <div className="flex flex-col gap-1 mt-1">
