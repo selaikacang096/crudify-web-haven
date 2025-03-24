@@ -8,6 +8,7 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
+  LabelList
 } from "recharts";
 
 interface ChartDataItem {
@@ -26,6 +27,7 @@ const ZakatCharts: React.FC<ZakatChartsProps> = ({
   uangChartData, 
   formatCurrency 
 }) => {
+  // Calculate total for percentages
   const totalUang = useMemo(() => 
     uangChartData.reduce((sum, item) => sum + item.value, 0), 
     [uangChartData]
@@ -46,15 +48,15 @@ const ZakatCharts: React.FC<ZakatChartsProps> = ({
         <CardContent>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={uangChartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
+              <BarChart data={uangChartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
-                <Tooltip formatter={(value) => [formatCurrency(value as number), 'Amount']} />
-                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Tooltip formatter={(value) => [formatCurrency(value as number), 'Jumlah']} />
+                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]}>
+                  <LabelList dataKey="value" position="top" 
+                    formatter={(value) => `${((value / totalUang) * 100).toFixed(1)}%`} />
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -69,15 +71,15 @@ const ZakatCharts: React.FC<ZakatChartsProps> = ({
         <CardContent>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={berasChartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
+              <BarChart data={berasChartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis unit=" kg" />
-                <Tooltip formatter={(value) => [`${value} kg`, 'Amount']} />
-                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Tooltip formatter={(value) => [`${value} kg`, 'Jumlah']} />
+                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]}>
+                  <LabelList dataKey="value" position="top" 
+                    formatter={(value) => `${((value / totalBeras) * 100).toFixed(1)}%`} />
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
