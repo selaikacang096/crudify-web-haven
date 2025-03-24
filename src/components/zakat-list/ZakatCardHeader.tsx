@@ -17,9 +17,9 @@ const ZakatCardHeader: React.FC<ZakatCardHeaderProps> = ({
   onDelete
 }) => {
   return (
-    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-      <div className="font-semibold flex items-center">
-        <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-medium mr-2">
+    <CardHeader className="flex flex-row items-center justify-between pb-0 space-y-0 bg-secondary/30">
+      <div className="font-medium flex items-center text-lg">
+        <span className="inline-flex items-center justify-center h-7 w-7 rounded-full bg-primary/10 text-primary text-xs font-medium mr-3">
           {index}
         </span>
         {name.normalize("NFKC")}

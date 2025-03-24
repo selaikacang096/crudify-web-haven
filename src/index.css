@@ -5,78 +5,76 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    --background: 0 0% 100%;
+    --foreground: 224 71.4% 4.1%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 224 71.4% 4.1%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 224 71.4% 4.1%;
 
-    --primary: 210 100% 50%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 220.9 39.3% 11%;
+    --primary-foreground: 210 20% 98%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
 
-    --accent: 210 40% 96%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 222 84% 5%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 71.4% 4.1%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5% 26%;
-    --sidebar-primary: 240 6% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 5% 96%;
-    --sidebar-accent-foreground: 240 6% 10%;
+    --sidebar-background: 220 14.3% 95.9%;
+    --sidebar-foreground: 224 71.4% 4.1%;
+    --sidebar-primary: 220.9 39.3% 11%;
+    --sidebar-primary-foreground: 210 20% 98%;
+    --sidebar-accent: 220 14.3% 95.9%;
+    --sidebar-accent-foreground: 220.9 39.3% 11%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-ring: 224 71.4% 4.1%;
   }
 
   .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
 
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
 
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
 
-    --primary: 210 100% 50%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 210 20% 98%;
+    --primary-foreground: 220.9 39.3% 11%;
 
-    --secondary: 217 33% 18%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
 
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
 
-    --accent: 217 33% 18%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
 
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 213 27% 84%;
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 216 12.2% 83.9%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
@@ -132,7 +130,7 @@
 @layer components {
   /* Table styles */
   .table-container {
-    @apply w-full overflow-auto pb-4 max-h-[70vh];
+    @apply w-full overflow-auto pb-4 max-h-[70vh] rounded-lg border border-border;
   }
 
   .data-table {
@@ -140,7 +138,7 @@
   }
 
   .data-table th {
-    @apply bg-secondary/80 backdrop-blur-sm sticky top-0 px-4 py-3 text-center text-sm font-medium text-muted-foreground z-10 border-b border-border;
+    @apply bg-secondary/80 backdrop-blur-sm sticky top-0 px-4 py-3 text-sm font-medium text-muted-foreground z-10 border-b border-border;
   }
 
   .data-table tr {
@@ -153,16 +151,16 @@
 
   /* Report table styles */
   .report-table {
-    @apply w-full border-collapse bg-gray-100;
+    @apply w-full border-collapse bg-secondary/40 rounded-lg overflow-hidden;
   }
 
   .report-table th, 
   .report-table td {
-    @apply border border-gray-300 p-2 text-sm;
+    @apply border border-border p-2 text-sm;
   }
 
   .report-table th {
-    @apply bg-gray-200 font-medium text-gray-700;
+    @apply bg-secondary font-medium text-secondary-foreground;
   }
 
   .report-table thead th {
@@ -174,12 +172,12 @@
   }
 
   .report-table tfoot td {
-    @apply bg-gray-200 font-semibold;
+    @apply bg-secondary font-semibold;
   }
 
   /* Form styles */
   .form-container {
-    @apply space-y-6 p-6 bg-card rounded-lg border border-border shadow-sm;
+    @apply space-y-6 p-6 bg-card rounded-lg border border-border shadow-protocol;
   }
 
   .input-group {
@@ -188,15 +186,36 @@
 
   /* Card styles with subtle shadow */
   .apple-card {
-    @apply bg-white rounded-xl border border-border/40 shadow-sm backdrop-blur-sm transition-all duration-300;
+    @apply bg-card rounded-lg border border-border/40 shadow-protocol transition-all duration-300;
   }
 
   .apple-card:hover {
-    @apply shadow-md;
+    @apply shadow-protocol-lg;
   }
 
   /* Subtle glass effect for containers */
   .glass-container {
-    @apply bg-white/90 backdrop-blur-md border border-white/20 shadow-sm;
+    @apply bg-card/90 backdrop-blur-md border border-border/20 shadow-protocol;
+  }
+  
+  /* Protocol design system styles */
+  .protocol-container {
+    @apply px-4 py-6 sm:px-6 lg:px-8 max-w-7xl mx-auto;
+  }
+  
+  .protocol-section {
+    @apply py-12 sm:py-16;
+  }
+  
+  .protocol-card {
+    @apply bg-card rounded-lg border border-border shadow-protocol hover:shadow-protocol-lg transition-all duration-300;
+  }
+  
+  .protocol-heading {
+    @apply text-2xl font-semibold tracking-tight text-foreground;
+  }
+  
+  .protocol-subheading {
+    @apply text-base text-muted-foreground mt-1;
   }
 }

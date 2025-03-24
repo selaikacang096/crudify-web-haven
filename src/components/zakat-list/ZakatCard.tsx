@@ -19,26 +19,30 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
   index
 }) => {
   return (
-    <Card className="apple-card h-full hover:shadow-md transition-shadow">
+    <Card className="protocol-card overflow-hidden h-full flex flex-col">
       <ZakatCardHeader
         name={record.nama}
         id={record.id}
         index={index}
         onDelete={onDelete}
       />
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4 pt-4 flex-grow">
         <ZakatCardDetails
           penginput={record.penginput}
           tanggal={record.tanggal}
           alamat={record.alamat}
         />
         
+        <div className="my-3 border-t border-border/50"></div>
+        
         <ZakatCardSections record={record} />
         
-        <ZakatCardSummary
-          totalBeras={record.totalBeras}
-          totalUang={record.totalUang}
-        />
+        <div className="mt-auto pt-3">
+          <ZakatCardSummary
+            totalBeras={record.totalBeras}
+            totalUang={record.totalUang}
+          />
+        </div>
       </CardContent>
     </Card>
   );

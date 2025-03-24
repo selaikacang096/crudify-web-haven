@@ -12,7 +12,7 @@ interface ZakatCardListProps {
 const ZakatCardList: React.FC<ZakatCardListProps> = ({ records, onDelete }) => {
   if (records.length === 0) {
     return (
-      <div className="text-center p-8 bg-muted/30 rounded-lg">
+      <div className="text-center p-12 bg-secondary/30 rounded-lg border border-border/50">
         <p className="text-muted-foreground">No records found</p>
       </div>
     );
@@ -20,7 +20,7 @@ const ZakatCardList: React.FC<ZakatCardListProps> = ({ records, onDelete }) => {
   
   return (
     <ErrorBoundary>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {records.map((record, idx) => (
           <ZakatCard 
             key={record.id} 

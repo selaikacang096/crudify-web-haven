@@ -62,20 +62,20 @@ const Index: React.FC = () => {
   
   return (
     <Layout>
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-border/60">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Zakat Management System</h1>
-            <p className="text-muted-foreground mt-1">
+            <h1 className="protocol-heading text-3xl">Zakat Management System</h1>
+            <p className="protocol-subheading">
               Manage and track zakat contributions efficiently
             </p>
           </div>
           <Button 
             asChild 
-            className="bg-primary hover:bg-primary/90 flex items-center h-10"
+            className="bg-primary hover:bg-primary/90 flex items-center h-10 px-4 gap-2"
           >
             <Link to="/add">
-              <PlusCircle className="mr-2 h-5 w-5" />
+              <PlusCircle className="h-5 w-5" />
               Input Data Baru
             </Link>
           </Button>
@@ -85,29 +85,32 @@ const Index: React.FC = () => {
           defaultValue="dashboard" 
           value={activeTab} 
           onValueChange={handleTabChange}
-          className="space-y-4"
+          className="space-y-6"
         >
-          <TabsList className="grid w-full sm:w-auto sm:inline-grid grid-cols-2 sm:grid-cols-2">
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
+          <TabsList className="grid w-full max-w-md grid-cols-2 mb-2">
+            <TabsTrigger value="dashboard" className="flex items-center gap-2 py-2.5">
               <BarChart className="h-4 w-4" />
               <span>Rekapan</span>
             </TabsTrigger>
-            <TabsTrigger value="records" className="flex items-center gap-2">
+            <TabsTrigger value="records" className="flex items-center gap-2 py-2.5">
               <Table className="h-4 w-4" />
               <span>Tabel</span>
             </TabsTrigger>
           </TabsList>
           
           {isLoading ? (
-            <div className="flex items-center justify-center h-40">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            <div className="flex items-center justify-center h-60 w-full bg-card/50 rounded-lg border border-border/30">
+              <div className="flex flex-col items-center gap-4">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                <p className="text-muted-foreground">Loading data...</p>
+              </div>
             </div>
           ) : error ? (
-            <div className="text-center p-6 text-destructive">
-              <p>Error loading data. Please try again.</p>
+            <div className="flex flex-col items-center justify-center h-60 w-full bg-destructive/5 rounded-lg border border-destructive/30 p-6">
+              <p className="text-destructive font-medium mb-4">Error loading data. Please try again.</p>
               <Button 
                 variant="outline" 
-                className="mt-4" 
+                className="mt-2" 
                 onClick={() => refetch()}
               >
                 Retry
@@ -115,15 +118,17 @@ const Index: React.FC = () => {
             </div>
           ) : (
             <>
-              <TabsContent value="dashboard" className="space-y-4">
+              <TabsContent value="dashboard" className="space-y-6 mt-2">
                 <Dashboard data={records} />
               </TabsContent>
               
-              <TabsContent value="records" className="space-y-4">
-                <ZakatTable data={records} onDelete={() => refetch()} />
+              <TabsContent value="records" className="space-y-6 mt-2">
+                <div className="protocol-card p-1">
+                  <ZakatTable data={records} onDelete={() => refetch()} />
+                </div>
               </TabsContent>
               
-              <TabsContent value="cards" className="space-y-4">
+              <TabsContent value="cards" className="space-y-6 mt-2">
                 <Button 
                   asChild
                   variant="outline" 
