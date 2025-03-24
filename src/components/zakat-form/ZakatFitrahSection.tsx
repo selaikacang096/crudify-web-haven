@@ -104,9 +104,7 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
                 type="number"
                 min="0"
                 value={zakatFitrah.uang}
-                readOnly
                 placeholder="0"
-                className="pl-9 bg-gray-100"
               />
             </div>
           </div>
