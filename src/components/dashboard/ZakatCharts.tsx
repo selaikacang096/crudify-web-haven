@@ -51,7 +51,7 @@ const ZakatCharts: React.FC<ZakatChartsProps> = ({
               <BarChart data={uangChartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <YAxis />
+                <YAxis tickFormatter={(value) => formatCurrency(value)} />
                 <Tooltip formatter={(value) => [formatCurrency(value as number), 'Jumlah']} />
                 <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]}>
                   <LabelList dataKey="value" position="top" 
