@@ -56,7 +56,21 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
           <span className="text-muted-foreground">Alamat:</span>
           <span className="ml-1 font-medium">{record.alamat}</span>
         </div>
+      {/* new info */}
+
+        <div className="flex items-start text-sm">
+          <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
+          <span className="text-muted-foreground">Fitrah Uang:</span>
+          <span className="ml-1 font-medium">({record.zakatFitrah.jiwaUang}Jiwa){formatCurrency(record.zakatFitrah.uang)}</span>
+        </div>
+
+        <div className="flex items-start text-sm">
+          <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
+          <span className="text-muted-foreground">Fitrah Beras:</span>
+          <span className="ml-1 font-medium">({record.zakatFitrah.jiwaBeras}Jiwa){record.zakatFitrah.berasKg} kg</span>
+        </div>
         
+      {/* new info */}
         <div className="grid grid-cols-2 gap-2 pt-2 border-t">
           <div className="flex items-center text-sm">
             <Package className="mr-2 h-4 w-4 text-muted-foreground" />
