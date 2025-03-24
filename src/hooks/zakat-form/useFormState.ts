@@ -1,9 +1,10 @@
 
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { ZakatFormData, ZakatRecord, ZAKAT_FITRAH_RATE_PER_JIWA } from "@/types/ZakatTypes";
+import { ZakatFormData, ZakatRecord } from "@/types/ZakatTypes";
 import { BERAS_PER_JIWA } from "./constants";
 import { validateJiwaInput } from "./validators";
+import { calculateBerasFromJiwa, calculateUangFromJiwa } from "@/utils/calculators";
 
 export const useFormState = (initialData?: ZakatRecord, isEdit: boolean = false) => {
   const [formData, setFormData] = useState<ZakatFormData>({
@@ -27,6 +28,8 @@ export const useFormState = (initialData?: ZakatRecord, isEdit: boolean = false)
       uang: 0
     }
   });
+  
+  const [zakatFitrahRate, setZakatFitrahRate] = useState(37500);
   
   // Load initial data if editing
   useEffect(() => {
@@ -58,7 +61,7 @@ export const useFormState = (initialData?: ZakatRecord, isEdit: boolean = false)
   // Effect to calculate zakat fitrah beras based on jiwa count
   useEffect(() => {
     if (formData.zakatFitrah.jiwaBeras > 0) {
-      const calculatedBerasKg = formData.zakatFitrah.jiwaBeras * BERAS_PER_JIWA;
+      const calculatedBerasKg = calculateBerasFromJiwa(formData.zakatFitrah.jiwaBeras, BERAS_PER_JIWA);
       setFormData(prev => ({
         ...prev,
         zakatFitrah: {
@@ -68,6 +71,20 @@ export const useFormState = (initialData?: ZakatRecord, isEdit: boolean = false)
       }));
     }
   }, [formData.zakatFitrah.jiwaBeras]);
+  
+  // Effect to calculate zakat fitrah uang based on jiwa count and rate
+  useEffect(() => {
+    if (formData.zakatFitrah.jiwaUang > 0) {
+      const calculatedUang = calculateUangFromJiwa(formData.zakatFitrah.jiwaUang, zakatFitrahRate);
+      setFormData(prev => ({
+        ...prev,
+        zakatFitrah: {
+          ...prev.zakatFitrah,
+          uang: calculatedUang
+        }
+      }));
+    }
+  }, [formData.zakatFitrah.jiwaUang, zakatFitrahRate]);
   
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,6 +143,11 @@ export const useFormState = (initialData?: ZakatRecord, isEdit: boolean = false)
     }));
   };
   
+  // Handle zakat fitrah rate change
+  const handleRateChange = (rate: number) => {
+    setZakatFitrahRate(rate);
+  };
+  
   // Reset the form
   const handleReset = () => {
     if (isEdit && initialData) {
@@ -172,14 +194,17 @@ export const useFormState = (initialData?: ZakatRecord, isEdit: boolean = false)
           uang: 0
         }
       });
+      setZakatFitrahRate(37500);
     }
   };
 
   return {
     formData,
+    zakatFitrahRate,
     setFormData,
     handleInputChange,
     handleSelectChange,
+    handleRateChange,
     handleReset
   };
 };

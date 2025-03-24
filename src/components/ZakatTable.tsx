@@ -2,11 +2,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { ZakatRecord } from "@/types/ZakatTypes";
-import { deleteRecord } from "@/services/zakatService";
+import { deleteRecord } from "@/services/zakatApiService";
 import { toast } from "sonner";
 import TableHeader from "./zakat-table/TableHeader";
 import ZakatTableContent from "./zakat-table/ZakatTableContent";
 import DeleteConfirmDialog from "./zakat-table/DeleteConfirmDialog";
+import ErrorBoundary from "./ErrorBoundary";
 
 interface ZakatTableProps {
   data: ZakatRecord[];
@@ -88,7 +89,7 @@ const ZakatTable: React.FC<ZakatTableProps> = ({
   }, [currentSearch, currentLocation, location]);
   
   return (
-    <>
+    <ErrorBoundary>
       <TableHeader data={data} />
       
       <ZakatTableContent data={data} onDeleteClick={confirmDelete} />
@@ -101,7 +102,7 @@ const ZakatTable: React.FC<ZakatTableProps> = ({
         onConfirm={handleDelete}
         isDeleting={isDeleting}
       />
-    </>
+    </ErrorBoundary>
   );
 };
 

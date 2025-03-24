@@ -12,8 +12,10 @@ export const useZakatForm = ({
 }) => {
   const {
     formData,
+    zakatFitrahRate,
     handleInputChange,
     handleSelectChange,
+    handleRateChange,
     handleReset
   } = useFormState(initialData, isEdit);
   
@@ -24,9 +26,11 @@ export const useZakatForm = ({
 
   return {
     formData,
+    zakatFitrahRate,
     isSubmitting,
     handleInputChange,
     handleSelectChange,
+    handleRateChange,
     handleSubmit,
     handleReset
   };

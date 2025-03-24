@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const DEFAULT_ZAKAT_FITRAH_RATE_PER_JIWA = 37500; // Default value
+import { formatCurrency } from "@/utils/formatters";
 
 interface ZakatFitrahSectionProps {
   zakatFitrah: {
@@ -13,50 +13,20 @@ interface ZakatFitrahSectionProps {
     jiwaUang: number;
     uang: number;
   };
+  zakatFitrahRate: number;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onRateChange: (rate: number) => void;
 }
-
-// Format currency for display
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(amount);
-};
 
 const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
   zakatFitrah,
+  zakatFitrahRate,
   onInputChange,
+  onRateChange
 }) => {
-  const [selectedAmount, setSelectedAmount] = useState(DEFAULT_ZAKAT_FITRAH_RATE_PER_JIWA);
-
-  // Update zakatFitrah.uang whenever jiwaUang or selectedAmount changes
-  useEffect(() => {
-    const calculatedUang = zakatFitrah.jiwaUang * selectedAmount;
-    
-    // Properly create a field change event by creating an actual input element
-    // and triggering a change on it with the right value
-    const inputEl = document.createElement('input');
-    inputEl.name = "zakatFitrah.uang";
-    inputEl.value = calculatedUang.toString();
-    
-    // Create a genuine change event on this element
-    const event = new Event('change', { bubbles: true });
-    const changeEvent = event as unknown as React.ChangeEvent<HTMLInputElement>;
-    
-    // Add the required properties to make it work with our handler
-    Object.defineProperty(changeEvent, 'target', {
-      writable: false,
-      value: inputEl
-    });
-    
-    onInputChange(changeEvent);
-  }, [selectedAmount, zakatFitrah.jiwaUang, onInputChange]);
-
-  const handleAmountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = parseInt(e.target.value, 10);
-    setSelectedAmount(value);
+  const handleRateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const rate = parseInt(e.target.value, 10);
+    onRateChange(rate);
   };
 
   return (
@@ -114,9 +84,14 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
           {/* Uang */}
           <div className="space-y-2">
             <Label htmlFor="zakatFitrah.uang">
-              Uang (Auto-calculated: {formatCurrency(selectedAmount)}/jiwa)
+              Uang (Auto-calculated: {formatCurrency(zakatFitrahRate)}/jiwa)
             </Label>
-            <select onChange={handleAmountChange} value={selectedAmount} className="border p-2 rounded">
+            <select 
+              onChange={handleRateChange} 
+              value={zakatFitrahRate} 
+              className="border p-2 rounded w-full"
+              aria-label="Select rate per jiwa"
+            >
               <option value="37500">37,500</option>
               <option value="40000">40,000</option>
               <option value="50000">50,000</option>

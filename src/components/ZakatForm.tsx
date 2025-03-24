@@ -24,9 +24,11 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
   
   const {
     formData,
+    zakatFitrahRate,
     isSubmitting,
     handleInputChange,
     handleSelectChange,
+    handleRateChange,
     handleSubmit,
     handleReset
   } = useZakatForm({ initialData, isEdit });
@@ -60,7 +62,9 @@ const ZakatForm: React.FC<ZakatFormProps> = ({ initialData, isEdit = false }) =>
           {/* Zakat Fitrah Section */}
           <ZakatFitrahSection
             zakatFitrah={formData.zakatFitrah}
+            zakatFitrahRate={zakatFitrahRate}
             onInputChange={handleInputChange}
+            onRateChange={handleRateChange}
           />
           
           {/* Zakat Maal, Infaq & Fidyah Section */}

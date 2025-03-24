@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZakatFormData, ZakatRecord } from "@/types/ZakatTypes";
-import { createRecord, updateRecord } from "@/services/zakatService";
+import { createRecord, updateRecord } from "@/services/zakatApiService";
 import { toast } from "sonner";
 
 export const useFormSubmission = (
