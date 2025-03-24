@@ -69,20 +69,20 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
           <div className="text-2xl font-semibold">{formatCurrency(totalUang)}</div>
           <div className="pt-2 grid grid-cols-1 gap-1 text-xs text-muted-foreground">
             {zakatFitrahUang > 0 && <div className="flex justify-between">
-                <span>Zakat Fitrah:</span>
-                <span>{formatCurrency(zakatFitrahUang)}</span>
+                <span className="text-sm">Zakat Fitrah:</span>
+                <span className="text-sm">{formatCurrency(zakatFitrahUang)}</span>
               </div>}
             {zakatMaal > 0 && <div className="flex justify-between">
-                <span>Zakat Maal:</span>
-                <span>{formatCurrency(zakatMaal)}</span>
+                <span className="text-sm">Zakat Maal:</span>
+                <span className="text-sm">{formatCurrency(zakatMaal)}</span>
               </div>}
             {infaqUang > 0 && <div className="flex justify-between">
-                <span>Infaq:</span>
-                <span>{formatCurrency(infaqUang)}</span>
+                <span className="text-sm">Infaq:</span>
+                <span className="text-sm">{formatCurrency(infaqUang)}</span>
               </div>}
             {fidyahUang > 0 && <div className="flex justify-between">
-                <span>Fidyah:</span>
-                <span>{formatCurrency(fidyahUang)}</span>
+                <span className="text-sm">Fidyah:</span>
+                <span className="text-sm">{formatCurrency(fidyahUang)}</span>
               </div>}
           </div>
         </CardContent>
