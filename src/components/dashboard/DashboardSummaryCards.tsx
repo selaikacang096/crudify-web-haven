@@ -46,8 +46,8 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
           <div className="text-2xl font-semibold">{totalBeras} kg</div>
           <div className="pt-2 grid grid-cols-1 gap-1 text-xs text-muted-foreground">
             <div className="flex justify-between">
-              <span>Zakat Fitrah:</span>
-              <span>{zakatFitrahBeras} kg</span>
+              <span className="text-sm">Zakat Fitrah:</span>
+              <span className="text-sm">{zakatFitrahBeras} kg</span>
             </div>
             {infaqBeras > 0 && <div className="flex justify-between">
                 <span>Infaq:</span>
