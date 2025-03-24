@@ -15,14 +15,14 @@ const ZakatTableContent: React.FC<ZakatTableContentProps> = ({
 }) => {
   const isMobile = useIsMobile();
   
-  if (isMobile) {
-    return (
-      <div className="p-4 text-center text-sm text-muted-foreground">
-        <p className="mb-2">Table view is optimized for larger screens.</p>
-        <p>Please use card view on mobile devices for better experience.</p>
-      </div>
-    );
-  }
+  // if (isMobile) {
+  //   return (
+  //     <div className="p-4 text-center text-sm text-muted-foreground">
+  //       <p className="mb-2">Table view is optimized for larger screens.</p>
+  //       <p>Please use card view on mobile devices for better experience.</p>
+  //     </div>
+  //   );
+  // }
   
   return (
     <div className="table-container rounded-lg border border-border/60 shadow-protocol overflow-x-auto animate-fade-in">
