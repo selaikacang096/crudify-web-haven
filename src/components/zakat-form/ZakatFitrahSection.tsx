@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const DEFAULT_ZAKAT_FITRAH_RATE_PER_JIWA = 37500; // Default value
 
@@ -13,22 +13,37 @@ interface ZakatFitrahSectionProps {
     uang: number;
   };
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setZakatFitrah: React.Dispatch<React.SetStateAction<{
+    jiwaBeras: number;
+    berasKg: number;
+    jiwaUang: number;
+    uang: number;
+  }>>;
 }
 
 // Format currency for display
 const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
     minimumFractionDigits: 0,
   }).format(amount);
 };
 
 const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
   zakatFitrah,
-  onInputChange
+  onInputChange,
+  setZakatFitrah
 }) => {
   const [selectedAmount, setSelectedAmount] = useState(DEFAULT_ZAKAT_FITRAH_RATE_PER_JIWA);
+
+  // Update zakatFitrah.uang setiap kali selectedAmount berubah
+  useEffect(() => {
+    setZakatFitrah((prev) => ({
+      ...prev,
+      uang: prev.jiwaUang * selectedAmount,
+    }));
+  }, [selectedAmount, zakatFitrah.jiwaUang, setZakatFitrah]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = parseInt(e.target.value, 10);
@@ -42,7 +57,7 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Other input fields */}
+          {/* Jiwa Beras */}
           <div className="space-y-2">
             <Label htmlFor="zakatFitrah.jiwaBeras">Jiwa Beras (max 100)</Label>
             <Input
@@ -56,6 +71,8 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
               placeholder="0"
             />
           </div>
+
+          {/* Beras */}
           <div className="space-y-2">
             <Label htmlFor="zakatFitrah.berasKg">Beras (kg) - Auto-calculated: 2.5kg/jiwa</Label>
             <Input
@@ -69,6 +86,8 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
               placeholder="0"
             />
           </div>
+
+          {/* Jiwa Uang */}
           <div className="space-y-2">
             <Label htmlFor="zakatFitrah.jiwaUang">Jiwa Uang (max 100)</Label>
             <Input
@@ -82,11 +101,13 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
               placeholder="0"
             />
           </div>
+
+          {/* Uang */}
           <div className="space-y-2">
             <Label htmlFor="zakatFitrah.uang">
               Uang (Auto-calculated: {formatCurrency(selectedAmount)}/jiwa)
             </Label>
-            <select onChange={handleAmountChange} value={selectedAmount}>
+            <select onChange={handleAmountChange} value={selectedAmount} className="border p-2 rounded">
               <option value="37500">37,500</option>
               <option value="40000">40,000</option>
               <option value="50000">50,000</option>
@@ -98,7 +119,7 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
                 name="zakatFitrah.uang"
                 type="number"
                 min="0"
-                value={zakatFitrah.jiwaUang * selectedAmount}
+                value={zakatFitrah.uang}
                 readOnly
                 placeholder="0"
                 className="pl-9 bg-gray-100"
