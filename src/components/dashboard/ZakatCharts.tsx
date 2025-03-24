@@ -29,6 +29,29 @@ const ZakatCharts: React.FC<ZakatChartsProps> = ({
 }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Uang Chart */}
+            <Card className="apple-card">
+        <CardHeader>
+          <CardTitle>Distribusi Uang</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={uangChartData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip formatter={(value) => [formatCurrency(value as number), 'Amount']} />
+                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Beras Chart */}
       <Card className="apple-card">
         <CardHeader>
@@ -45,29 +68,6 @@ const ZakatCharts: React.FC<ZakatChartsProps> = ({
                 <XAxis dataKey="name" />
                 <YAxis unit=" kg" />
                 <Tooltip formatter={(value) => [`${value} kg`, 'Amount']} />
-                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
-      
-      {/* Uang Chart */}
-      <Card className="apple-card">
-        <CardHeader>
-          <CardTitle>Distribusi Uang</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={uangChartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip formatter={(value) => [formatCurrency(value as number), 'Amount']} />
                 <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>

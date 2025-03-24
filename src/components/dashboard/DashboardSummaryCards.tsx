@@ -22,7 +22,7 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
           <CardTitle className="text-muted-foreground text-sm font-normal">Total Muzakki</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-semibold">{totalRecords}</div>
+          <div className="text-2xl font-semibold">{totalRecords} Orang</div>
         </CardContent>
       </Card>
       <Card className="apple-card">

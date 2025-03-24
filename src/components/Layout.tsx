@@ -74,7 +74,7 @@ const Layout: React.FC<LayoutProps> = ({ children, forceActivePath }) => {
                   isActive("/add") ? "text-foreground" : "text-muted-foreground"
                 )}
               >
-                Add Record
+                Input
               </Link>
               <Button 
                 variant="ghost" 
@@ -126,15 +126,15 @@ const Layout: React.FC<LayoutProps> = ({ children, forceActivePath }) => {
             )}
           >
             <Plus size={20} />
-            <span className="text-xs mt-1">Add</span>
+            <span className="text-xs mt-1">Input</span>
           </Link>
-          <button
+          {/* <button
             onClick={handleLogout}
             className="flex flex-col items-center p-3 transition-colors text-muted-foreground hover:text-primary"
           >
             <LogOut size={20} />
             <span className="text-xs mt-1">Logout</span>
-          </button>
+          </button> */}
         </nav>
       </div>
     </div>

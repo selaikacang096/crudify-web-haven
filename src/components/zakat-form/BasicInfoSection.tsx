@@ -68,7 +68,7 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="nama">Nama</Label>
+          <Label htmlFor="nama">Nama Muzakki</Label>
           <Input
             id="nama"
             name="nama"
