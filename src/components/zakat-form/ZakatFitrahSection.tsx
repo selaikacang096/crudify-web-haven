@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -13,12 +14,6 @@ interface ZakatFitrahSectionProps {
     uang: number;
   };
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setZakatFitrah: React.Dispatch<React.SetStateAction<{
-    jiwaBeras: number;
-    berasKg: number;
-    jiwaUang: number;
-    uang: number;
-  }>>;
 }
 
 // Format currency for display
@@ -33,17 +28,23 @@ const formatCurrency = (amount: number) => {
 const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
   zakatFitrah,
   onInputChange,
-  setZakatFitrah
 }) => {
   const [selectedAmount, setSelectedAmount] = useState(DEFAULT_ZAKAT_FITRAH_RATE_PER_JIWA);
 
-  // Update zakatFitrah.uang setiap kali selectedAmount berubah
+  // Update zakatFitrah.uang whenever jiwaUang or selectedAmount changes
   useEffect(() => {
-    setZakatFitrah((prev) => ({
-      ...prev,
-      uang: prev.jiwaUang * selectedAmount,
-    }));
-  }, [selectedAmount, zakatFitrah.jiwaUang, setZakatFitrah]);
+    const calculatedUang = zakatFitrah.jiwaUang * selectedAmount;
+    
+    // Create a synthetic event to update the parent state
+    const syntheticEvent = {
+      target: {
+        name: "zakatFitrah.uang",
+        value: calculatedUang
+      }
+    } as React.ChangeEvent<HTMLInputElement>;
+    
+    onInputChange(syntheticEvent);
+  }, [selectedAmount, zakatFitrah.jiwaUang, onInputChange]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = parseInt(e.target.value, 10);

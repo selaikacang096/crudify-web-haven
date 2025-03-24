@@ -55,21 +55,7 @@ export const useFormState = (initialData?: ZakatRecord, isEdit: boolean = false)
     }
   }, [initialData, isEdit]);
 
-  // Effect to calculate zakat fitrah uang based on jiwa count
-  useEffect(() => {
-    if (formData.zakatFitrah.jiwaUang > 0) {
-      const calculatedUang = formData.zakatFitrah.jiwaUang * ZAKAT_FITRAH_RATE_PER_JIWA;
-      setFormData(prev => ({
-        ...prev,
-        zakatFitrah: {
-          ...prev.zakatFitrah,
-          uang: calculatedUang
-        }
-      }));
-    }
-  }, [formData.zakatFitrah.jiwaUang]);
-  
-  // Effect to calculate beras kg based on jiwa beras count
+  // Effect to calculate zakat fitrah beras based on jiwa count
   useEffect(() => {
     if (formData.zakatFitrah.jiwaBeras > 0) {
       const calculatedBerasKg = formData.zakatFitrah.jiwaBeras * BERAS_PER_JIWA;
