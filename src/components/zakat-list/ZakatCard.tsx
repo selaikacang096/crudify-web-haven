@@ -71,12 +71,12 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
                 <span className="font-medium ml-1 text-sm text-slate-900">{formatCurrency(record.zakatFitrah.uang)}</span>
                 {record.zakatFitrah.jiwaUang > 0 && ` (${record.zakatFitrah.jiwaUang} jiwa)`}
               </span>}
-              <div className="flex flex-col gap-1 mt-1">
+              {/* <div className="flex flex-col gap-1 mt-1"> */}
                 {record.zakatFitrah.berasKg > 0 && <span className="text-sm text-slate-900">
-                    <span className="font-medium">{record.zakatFitrah.berasKg} kg</span>
+                    <span className="font-medium ml-1">{record.zakatFitrah.berasKg} kg</span>
                     {record.zakatFitrah.jiwaBeras > 0 && ` (${record.zakatFitrah.jiwaBeras} jiwa)`}
                   </span>}
-              </div>
+              {/* </div> */}
             </div>
           </div>}
 
