@@ -39,7 +39,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
           <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-medium mr-2">
             {index}
           </span>
-          {record.nama}
+          {record.nama.normalize("NFKC")}
         </div>
         <TableActions recordId={record.id} onDelete={onDelete} />
       </CardHeader>
@@ -59,7 +59,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
         <div className="flex items-start text-sm">
           <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
           <span className="text-muted-foreground">Alamat:</span>
-          <span className="ml-1 font-medium">{record.alamat}</span>
+          <span className="ml-1 font-medium">{record.alamat.normalize("NFKC")}</span>
         </div>
 
         {/* Show Zakat Fitrah details if there are values */}
