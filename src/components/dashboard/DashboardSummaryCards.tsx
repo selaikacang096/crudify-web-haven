@@ -39,29 +39,6 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
       </Card>
       <Card className="apple-card">
         <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-muted-foreground text-sm font-medium">Total Beras</CardTitle>
-          <Wheat className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-semibold">{totalBeras} kg</div>
-          <div className="pt-2 grid grid-cols-1 gap-1 text-xs text-muted-foreground">
-            <div className="flex justify-between border-t pt-2">
-              <span className="text-sm">Zakat Fitrah:</span>
-              <span className="text-sm">{zakatFitrahBeras} kg</span>
-            </div>
-            {infaqBeras > 0 && <div className="flex justify-between">
-                <span>Infaq:</span>
-                <span>{infaqBeras} kg</span>
-              </div>}
-            {fidyahBeras > 0 && <div className="flex justify-between">
-                <span>Fidyah:</span>
-                <span>{fidyahBeras} kg</span>
-              </div>}
-          </div>
-        </CardContent>
-      </Card>
-      <Card className="apple-card">
-        <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-muted-foreground text-sm font-medium">Total Uang</CardTitle>
           <DollarSign className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
@@ -87,6 +64,30 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({
           </div>
         </CardContent>
       </Card>
+      <Card className="apple-card">
+        <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+          <CardTitle className="text-muted-foreground text-sm font-medium">Total Beras</CardTitle>
+          <Wheat className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-semibold">{totalBeras} kg</div>
+          <div className="pt-2 grid grid-cols-1 gap-1 text-xs text-muted-foreground">
+            <div className="flex justify-between border-t pt-2">
+              <span className="text-sm">Zakat Fitrah:</span>
+              <span className="text-sm">{zakatFitrahBeras} kg</span>
+            </div>
+            {infaqBeras > 0 && <div className="flex justify-between">
+                <span>Infaq:</span>
+                <span>{infaqBeras} kg</span>
+              </div>}
+            {fidyahBeras > 0 && <div className="flex justify-between">
+                <span>Fidyah:</span>
+                <span>{fidyahBeras} kg</span>
+              </div>}
+          </div>
+        </CardContent>
+      </Card>
+      
       
       {/* Category breakdown cards */}
       
