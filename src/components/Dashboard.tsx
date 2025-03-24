@@ -40,6 +40,13 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         totalRecords={totals.totalRecords} 
         totalBeras={totals.totalBeras} 
         totalUang={totals.totalUang}
+        zakatFitrahBeras={totals.zakatFitrahBeras}
+        zakatFitrahUang={totals.zakatFitrahUang}
+        zakatMaal={totals.zakatMaal}
+        infaqBeras={totals.infaqBeras}
+        infaqUang={totals.infaqUang}
+        fidyahBeras={totals.fidyahBeras}
+        fidyahUang={totals.fidyahUang}
         formatCurrency={formatCurrency}
       />
       
