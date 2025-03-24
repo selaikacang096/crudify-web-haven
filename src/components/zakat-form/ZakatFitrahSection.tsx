@@ -105,6 +105,7 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
                 min="0"
                 value={zakatFitrah.uang}
                 placeholder="0"
+                className="pl-9"
               />
             </div>
           </div>
