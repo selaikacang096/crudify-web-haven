@@ -68,12 +68,12 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
             <div>
               <span className="font-medium text-blue-600">Zakat Fitrah:</span>
               <div className="flex flex-col gap-1 mt-1">
-                {record.zakatFitrah.berasKg > 0 && <span className="text-xs text-muted-foreground">
+                {record.zakatFitrah.berasKg > 0 && <span className="text-sm text-slate-900">
                     <span className="font-medium">{record.zakatFitrah.berasKg} kg</span>
                     {record.zakatFitrah.jiwaBeras > 0 && ` (${record.zakatFitrah.jiwaBeras} jiwa)`}
                   </span>}
-                {record.zakatFitrah.uang > 0 && <span className="text-xs text-muted-foreground">
-                    <span className="font-medium">{formatCurrency(record.zakatFitrah.uang)}</span>
+                {record.zakatFitrah.uang > 0 && <span className="text-sm font-normal text-slate-900">
+                    <span className="font-medium text-sm text-slate-900">{formatCurrency(record.zakatFitrah.uang)}</span>
                     {record.zakatFitrah.jiwaUang > 0 && ` (${record.zakatFitrah.jiwaUang} jiwa)`}
                   </span>}
               </div>
@@ -97,7 +97,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
                     <span className="font-medium">{record.infaq.beras} kg</span>
                   </span>}
                 {record.infaq.uang > 0 && <span className="text-xs text-muted-foreground">
-                    <span className="font-medium">{formatCurrency(record.infaq.uang)}</span>
+                    <span className="font-medium text-sm text-slate-900">{formatCurrency(record.infaq.uang)}</span>
                   </span>}
               </div>
             </div>
@@ -113,7 +113,7 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
                     <span className="font-medium">{record.fidyah.beras} kg</span>
                   </span>}
                 {record.fidyah.uang > 0 && <span className="text-xs text-muted-foreground">
-                    <span className="font-medium">{formatCurrency(record.fidyah.uang)}</span>
+                    <span className="font-medium text-sm text-slate-900">{formatCurrency(record.fidyah.uang)}</span>
                   </span>}
               </div>
             </div>
