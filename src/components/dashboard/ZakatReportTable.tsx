@@ -68,7 +68,7 @@ const ZakatReportTable: React.FC<ZakatReportTableProps> = ({
       const pageHeight = 295; // A4 height in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
-      const pdf = new jsPDF('l', 'mm', 'a4');
+      const pdf = new jsPDF('p', 'mm', 'a4');
       
       // Add title
       pdf.setFontSize(14);
