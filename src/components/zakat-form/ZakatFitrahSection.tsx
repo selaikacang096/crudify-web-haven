@@ -35,15 +35,23 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
   useEffect(() => {
     const calculatedUang = zakatFitrah.jiwaUang * selectedAmount;
     
-    // Create a synthetic event to update the parent state
-    const syntheticEvent = {
-      target: {
-        name: "zakatFitrah.uang",
-        value: calculatedUang
-      }
-    } as React.ChangeEvent<HTMLInputElement>;
+    // Properly create a field change event by creating an actual input element
+    // and triggering a change on it with the right value
+    const inputEl = document.createElement('input');
+    inputEl.name = "zakatFitrah.uang";
+    inputEl.value = calculatedUang.toString();
     
-    onInputChange(syntheticEvent);
+    // Create a genuine change event on this element
+    const event = new Event('change', { bubbles: true });
+    const changeEvent = event as unknown as React.ChangeEvent<HTMLInputElement>;
+    
+    // Add the required properties to make it work with our handler
+    Object.defineProperty(changeEvent, 'target', {
+      writable: false,
+      value: inputEl
+    });
+    
+    onInputChange(changeEvent);
   }, [selectedAmount, zakatFitrah.jiwaUang, onInputChange]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
