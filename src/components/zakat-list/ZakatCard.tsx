@@ -67,14 +67,14 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
             <Receipt className="mr-2 h-4 w-4 text-blue-500" />
             <div>
               <span className="font-medium text-blue-600">Zakat Fitrah:</span>
+              {record.zakatFitrah.uang > 0 && <span className="text-sm font-normal text-slate-900">
+                <span className="font-medium text-sm text-slate-900">{formatCurrency(record.zakatFitrah.uang)}</span>
+                {record.zakatFitrah.jiwaUang > 0 && ` (${record.zakatFitrah.jiwaUang} jiwa)`}
+              </span>}
               <div className="flex flex-col gap-1 mt-1">
                 {record.zakatFitrah.berasKg > 0 && <span className="text-sm text-slate-900">
                     <span className="font-medium">{record.zakatFitrah.berasKg} kg</span>
                     {record.zakatFitrah.jiwaBeras > 0 && ` (${record.zakatFitrah.jiwaBeras} jiwa)`}
-                  </span>}
-                {record.zakatFitrah.uang > 0 && <span className="text-sm font-normal text-slate-900">
-                    <span className="font-medium text-sm text-slate-900">{formatCurrency(record.zakatFitrah.uang)}</span>
-                    {record.zakatFitrah.jiwaUang > 0 && ` (${record.zakatFitrah.jiwaUang} jiwa)`}
                   </span>}
               </div>
             </div>
@@ -92,13 +92,13 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
             <HandCoins className="mr-2 h-4 w-4 text-cyan-500" />
             <div>
               <span className="font-medium text-cyan-600">Infaq:</span>
+              {record.infaq.uang > 0 && <span className="text-xs text-muted-foreground">
+                  <span className="font-medium text-sm text-slate-900">{formatCurrency(record.infaq.uang)}</span>
+                </span>}
               <div className="flex flex-col gap-1 mt-1">
                 {record.infaq.beras > 0 && <span className="text-xs text-muted-foreground">
                     <span className="font-medium">{record.infaq.beras} kg</span>
-                  </span>}
-                {record.infaq.uang > 0 && <span className="text-xs text-muted-foreground">
-                    <span className="font-medium text-sm text-slate-900">{formatCurrency(record.infaq.uang)}</span>
-                  </span>}
+                </span>}
               </div>
             </div>
           </div>}
@@ -108,12 +108,12 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
             <HandPlatter className="mr-2 h-4 w-4 text-teal-500" />
             <div>
               <span className="font-medium text-teal-600">Fidyah:</span>
+              {record.fidyah.uang > 0 && <span className="text-xs text-muted-foreground">
+                  <span className="font-medium text-sm text-slate-900">{formatCurrency(record.fidyah.uang)}</span>
+              </span>}
               <div className="flex flex-col gap-1 mt-1">
                 {record.fidyah.beras > 0 && <span className="text-xs text-muted-foreground">
                     <span className="font-medium">{record.fidyah.beras} kg</span>
-                  </span>}
-                {record.fidyah.uang > 0 && <span className="text-xs text-muted-foreground">
-                    <span className="font-medium text-sm text-slate-900">{formatCurrency(record.fidyah.uang)}</span>
                   </span>}
               </div>
             </div>
