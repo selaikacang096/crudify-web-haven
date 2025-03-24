@@ -69,11 +69,11 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
               <span className="font-medium text-blue-600">Zakat Fitrah:</span>
               <div className="flex flex-col gap-1 mt-1">
                 {record.zakatFitrah.berasKg > 0 && <span className="text-xs text-muted-foreground">
-                    Beras: <span className="font-medium">{record.zakatFitrah.berasKg} kg</span>
+                    <span className="font-medium">{record.zakatFitrah.berasKg} kg</span>
                     {record.zakatFitrah.jiwaBeras > 0 && ` (${record.zakatFitrah.jiwaBeras} jiwa)`}
                   </span>}
                 {record.zakatFitrah.uang > 0 && <span className="text-xs text-muted-foreground">
-                    Uang: <span className="font-medium">{formatCurrency(record.zakatFitrah.uang)}</span>
+                    <span className="font-medium">{formatCurrency(record.zakatFitrah.uang)}</span>
                     {record.zakatFitrah.jiwaUang > 0 && ` (${record.zakatFitrah.jiwaUang} jiwa)`}
                   </span>}
               </div>
@@ -94,10 +94,10 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
               <span className="font-medium text-cyan-600">Infaq:</span>
               <div className="flex flex-col gap-1 mt-1">
                 {record.infaq.beras > 0 && <span className="text-xs text-muted-foreground">
-                    Beras: <span className="font-medium">{record.infaq.beras} kg</span>
+                    <span className="font-medium">{record.infaq.beras} kg</span>
                   </span>}
                 {record.infaq.uang > 0 && <span className="text-xs text-muted-foreground">
-                    Uang: <span className="font-medium">{formatCurrency(record.infaq.uang)}</span>
+                    <span className="font-medium">{formatCurrency(record.infaq.uang)}</span>
                   </span>}
               </div>
             </div>
@@ -110,10 +110,10 @@ const ZakatCard: React.FC<ZakatCardProps> = ({
               <span className="font-medium text-teal-600">Fidyah:</span>
               <div className="flex flex-col gap-1 mt-1">
                 {record.fidyah.beras > 0 && <span className="text-xs text-muted-foreground">
-                    Beras: <span className="font-medium">{record.fidyah.beras} kg</span>
+                    <span className="font-medium">{record.fidyah.beras} kg</span>
                   </span>}
                 {record.fidyah.uang > 0 && <span className="text-xs text-muted-foreground">
-                    Uang: <span className="font-medium">{formatCurrency(record.fidyah.uang)}</span>
+                    <span className="font-medium">{formatCurrency(record.fidyah.uang)}</span>
                   </span>}
               </div>
             </div>
