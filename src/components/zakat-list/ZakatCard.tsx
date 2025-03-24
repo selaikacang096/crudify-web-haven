@@ -3,7 +3,7 @@ import React from "react";
 import { format } from "date-fns";
 import { ZakatRecord } from "@/types/ZakatTypes";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { User, Calendar, MapPin, Coins, Package } from "lucide-react";
+import { User, Calendar, MapPin, Coins, Package, FileDigit, FileBox } from "lucide-react";
 import TableActions from "../zakat-table/TableActions";
 
 interface ZakatCardProps {
@@ -59,15 +59,15 @@ const ZakatCard: React.FC<ZakatCardProps> = ({ record, onDelete, index }) => {
       {/* new info */}
 
         <div className="flex items-start text-sm">
-          <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
-          <span className="text-muted-foreground">Fitrah Uang:</span>
-          <span className="ml-1 font-medium">({record.zakatFitrah.jiwaUang}Jiwa){formatCurrency(record.zakatFitrah.uang)}</span>
+          <FileDigit className="mr-2 h-4 w-4 text-muted-foreground" />
+          <span className="text-muted-foreground">Zakat Fitrah:</span>
+          <span className="ml-1 font-medium">{formatCurrency(record.zakatFitrah.uang)} - {record.zakatFitrah.jiwaUang} Jiwa</span>
         </div>
 
         <div className="flex items-start text-sm">
-          <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
-          <span className="text-muted-foreground">Fitrah Beras:</span>
-          <span className="ml-1 font-medium">({record.zakatFitrah.jiwaBeras}Jiwa){record.zakatFitrah.berasKg} kg</span>
+          <FileBox className="mr-2 h-4 w-4 text-muted-foreground" />
+          <span className="text-muted-foreground">            :</span>
+          <span className="ml-1 font-medium">{record.zakatFitrah.berasKg} kg - {record.zakatFitrah.jiwaBeras} Jiwa</span>
         </div>
         
       {/* new info */}
