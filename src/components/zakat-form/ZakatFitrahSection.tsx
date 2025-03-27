@@ -1,8 +1,7 @@
-
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency } from "@/utils/formatters";
 
@@ -16,17 +15,23 @@ interface ZakatFitrahSectionProps {
   zakatFitrahRate: number;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRateChange: (rate: number) => void;
+  onUangChange: (uang: number) => void;
 }
 
 const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
   zakatFitrah,
   zakatFitrahRate,
   onInputChange,
-  onRateChange
+  onRateChange,
+  onUangChange
 }) => {
-  const handleRateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const rate = parseInt(e.target.value, 10);
-    onRateChange(rate);
+  const handleRateChange = (rate: string) => {
+    onRateChange(parseInt(rate, 10));
+  };
+
+  const handleUangChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uang = parseInt(e.target.value, 10) || 0;
+    onUangChange(uang);
   };
 
   return (
@@ -86,16 +91,20 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
             <Label htmlFor="zakatFitrah.uang">
               Uang (Auto-calculated: {formatCurrency(zakatFitrahRate)}/jiwa)
             </Label>
-            <select 
-              onChange={handleRateChange} 
-              value={zakatFitrahRate} 
-              className="border p-2 rounded w-full"
-              aria-label="Select rate per jiwa"
-            >
-              <option value="37500">37,500</option>
-              <option value="40000">40,000</option>
-              <option value="50000">50,000</option>
-            </select>
+
+            {/* Select Rate */}
+            <Select onValueChange={handleRateChange} value={zakatFitrahRate.toString()}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select rate per jiwa" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="37500">37,500</SelectItem>
+                <SelectItem value="40000">40,000</SelectItem>
+                <SelectItem value="50000">50,000</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Input Uang */}
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">Rp</span>
               <Input
@@ -104,6 +113,7 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
                 type="number"
                 min="0"
                 value={zakatFitrah.uang}
+                onChange={handleUangChange}
                 placeholder="0"
                 className="pl-9"
               />
