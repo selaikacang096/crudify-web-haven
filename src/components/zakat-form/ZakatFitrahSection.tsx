@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
@@ -10,28 +10,37 @@ interface ZakatFitrahSectionProps {
     jiwaBeras: number;
     berasKg: number;
     jiwaUang: number;
-    uang: number;
   };
   zakatFitrahRate: number;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRateChange: (rate: number) => void;
-  onUangChange: (uang: number) => void;
 }
 
 const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
   zakatFitrah,
   zakatFitrahRate,
   onInputChange,
-  onRateChange,
-  onUangChange
+  onRateChange
 }) => {
-  const handleRateChange = (rate: string) => {
-    onRateChange(parseInt(rate, 10));
+  const [uang, setUang] = useState(zakatFitrah.jiwaUang * zakatFitrahRate);
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Update uang jika jumlah jiwaUang berubah, KECUALI jika user sedang mengeditnya
+  useEffect(() => {
+    if (!isEditing) {
+      setUang(zakatFitrah.jiwaUang * zakatFitrahRate);
+    }
+  }, [zakatFitrah.jiwaUang, zakatFitrahRate, isEditing]);
+
+  // Fungsi untuk menangani perubahan manual oleh pengguna
+  const handleUangChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsEditing(true);
+    setUang(parseInt(e.target.value, 10) || 0);
   };
 
-  const handleUangChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const uang = parseInt(e.target.value, 10) || 0;
-    onUangChange(uang);
+  // Jika pengguna selesai mengedit (blur dari input), kembalikan ke mode auto
+  const handleUangBlur = () => {
+    setIsEditing(false);
   };
 
   return (
@@ -93,7 +102,7 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
             </Label>
 
             {/* Select Rate */}
-            <Select onValueChange={handleRateChange} value={zakatFitrahRate.toString()}>
+            <Select onValueChange={(value) => onRateChange(parseInt(value, 10))} value={zakatFitrahRate.toString()}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select rate per jiwa" />
               </SelectTrigger>
@@ -112,8 +121,9 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
                 name="zakatFitrah.uang"
                 type="number"
                 min="0"
-                value={zakatFitrah.uang}
+                value={uang}
                 onChange={handleUangChange}
+                onBlur={handleUangBlur}
                 placeholder="0"
                 className="pl-9"
               />
