@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency } from "@/utils/formatters";
 
@@ -10,6 +10,7 @@ interface ZakatFitrahSectionProps {
     jiwaBeras: number;
     berasKg: number;
     jiwaUang: number;
+    uang: number;
   };
   zakatFitrahRate: number;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -22,25 +23,17 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
   onInputChange,
   onRateChange
 }) => {
-  const [uang, setUang] = useState(zakatFitrah.jiwaUang * zakatFitrahRate);
-  const [isEditing, setIsEditing] = useState(false);
+  const [manualInput, setManualInput] = useState(false);
 
-  // Update uang jika jumlah jiwaUang berubah, KECUALI jika user sedang mengeditnya
-  useEffect(() => {
-    if (!isEditing) {
-      setUang(zakatFitrah.jiwaUang * zakatFitrahRate);
+  const handleRateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (value === "manual") {
+      setManualInput(true);
+    } else {
+      setManualInput(false);
+      const rate = parseInt(value, 10);
+      onRateChange(rate);
     }
-  }, [zakatFitrah.jiwaUang, zakatFitrahRate, isEditing]);
-
-  // Fungsi untuk menangani perubahan manual oleh pengguna
-  const handleUangChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsEditing(true);
-    setUang(parseInt(e.target.value, 10) || 0);
-  };
-
-  // Jika pengguna selesai mengedit (blur dari input), kembalikan ke mode auto
-  const handleUangBlur = () => {
-    setIsEditing(false);
   };
 
   return (
@@ -100,20 +93,17 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
             <Label htmlFor="zakatFitrah.uang">
               Uang (Auto-calculated: {formatCurrency(zakatFitrahRate)}/jiwa)
             </Label>
-
-            {/* Select Rate */}
-            <Select onValueChange={(value) => onRateChange(parseInt(value, 10))} value={zakatFitrahRate.toString()}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select rate per jiwa" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="37500">37,500</SelectItem>
-                <SelectItem value="40000">40,000</SelectItem>
-                <SelectItem value="50000">50,000</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {/* Input Uang */}
+            <select 
+              onChange={handleRateChange} 
+              value={manualInput ? "manual" : zakatFitrahRate} 
+              className="border p-2 rounded w-full"
+              aria-label="Select rate per jiwa"
+            >
+              <option value="37500">37,500</option>
+              <option value="40000">40,000</option>
+              <option value="50000">50,000</option>
+              <option value="manual">Masukkan Manual</option>
+            </select>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">Rp</span>
               <Input
@@ -121,11 +111,11 @@ const ZakatFitrahSection: React.FC<ZakatFitrahSectionProps> = ({
                 name="zakatFitrah.uang"
                 type="number"
                 min="0"
-                value={uang}
-                onChange={handleUangChange}
-                onBlur={handleUangBlur}
+                value={zakatFitrah.uang}
                 placeholder="0"
                 className="pl-9"
+                onChange={onInputChange}
+                disabled={!manualInput}
               />
             </div>
           </div>
